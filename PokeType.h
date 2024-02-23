@@ -1,22 +1,23 @@
-//#pragma once
-//
-//enum PokeType {
-//	Normal,
-//	Fire,
-//	Water,
-//	Grass,
-//	Electric,
-//	Ice,
-//	Fighting,
-//	Poison,
-//	Ground,
-//	Flying,
-//	Psychic,
-//	Bug,
-//	Rock,
-//	Ghost,
-//	Dragon,
-//	Dark,
-//	Steel,
-//	Fairy,
-//};
+#pragma once
+#include "raylib.h"
+
+enum PokeType {
+	normal,
+	fire,
+	water,
+	grass,
+	electric,
+	ice,
+	fighting,
+	poison,
+	ground,
+	flying,
+	psychic,
+	bug,
+	rock,
+	ghost,
+	dragon,
+	dark,
+	steel,
+	fairy,
+};
