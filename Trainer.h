@@ -18,5 +18,9 @@ private:
 public:
 
 	Trainer(std::string firstName, std::string lastName, std::string catchPhrase, int money, int life, std::vector<Pokemon> team);
+
+	void setName(string newName);
+	string& getName();
+	void AddPokemon(Pokemon newPokemon);
 };
 

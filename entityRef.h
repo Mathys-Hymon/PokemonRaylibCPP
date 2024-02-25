@@ -4,11 +4,10 @@
 #include "Trainer.h"
 #include <vector>
 
-class entityRef {
-public:
-    static std::vector<Ability> abilitys;
-    static std::vector<Pokemon> allPokemons;
-    static std::vector<Trainer> trainers;
 
-    void LoadImages();
-};
+    Ability getAbility(int index);
+    Pokemon getPokemon(int index);
+    Trainer& getTrainer(int index);
+
+    void LoadPokeSprites();
+    void UnloadPokeSprites();

@@ -2,7 +2,7 @@
 
 
 
-std::vector<Ability> entityRef::abilitys = {
+std::vector<Ability> abilitys = {
 	{"",0,normal,0},
 {"charge", 40, normal, 20},
 {"ultralaser", 150, normal, 5},
@@ -93,7 +93,7 @@ std::vector<Ability> entityRef::abilitys = {
 {"choc féerique", 65, fairy, 40},
 {"vibra soin", 0, fairy, 30},
 };
-std::vector<Pokemon> entityRef::allPokemons = {
+std::vector<Pokemon> allPokemons = {
 {"bulbizarre", "il porte une graine sur le dos depuis sa naissance. en grandissant, la graine devient de plus en plus grosse.", grass, 1, 50, abilitys[16], abilitys[1]},
 {"herbizarre", "herbizarre émet un parfum très doux lorsqu'il est sur le point de fleurir. la fleur se développe lorsqu'il atteint la maturité.", grass, 2, 65, abilitys[16], abilitys[15]},
 {"florizarre", "la plante sur le dos de florizarre prend une couleur vive et émet une odeur très agréable quand il est en pleine santé.", grass, 3, 80, abilitys[16], abilitys[38]},
@@ -247,7 +247,7 @@ std::vector<Pokemon> entityRef::allPokemons = {
 {"mew", "mew est un pokémon mythique rare. il est dit avoir l'adn de tous les pokémon et peut utiliser toutes les attaques.", psychic, 1, 100, abilitys[43], abilitys[24]},
 
 };
-std::vector<Trainer> entityRef::trainers = {
+std::vector<Trainer> trainers = {
    {"player","","",0,100,{}},
    {"rival","","",0,100,{}},
    {"dresseur normal", "smith", "la norme, mais solide !", 100, 3, {allPokemons[15], allPokemons[19], allPokemons[28]}},
@@ -268,7 +268,34 @@ std::vector<Trainer> entityRef::trainers = {
 
 };
 
-void entityRef::LoadImages()
+Ability getAbility(int index)
 {
+	return abilitys[index];
+}
 
+Pokemon getPokemon(int index)
+{
+	return allPokemons[index];
+}
+
+Trainer& getTrainer(int index)
+{
+	return trainers[index];
+}
+
+void LoadPokeSprites()
+{
+	for (int i = 0; i < allPokemons.size(); i++) {
+		std::string imagePath = "resources/pokemonsImages/pokemon_" + std::to_string(i + 1) + ".png";
+		Image pokemonImage = LoadImage(imagePath.c_str());
+		Texture2D pokemonSprite = LoadTextureFromImage(pokemonImage);
+		allPokemons[i].SetSprite(pokemonSprite);
+	}
+}
+
+void UnloadPokeSprites()
+{
+	for (int i = 0; i < allPokemons.size(); i++) {
+		UnloadTexture(allPokemons[i].GetSprite());
+	}
 }

@@ -134,7 +134,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ability.cpp" />
-    <ClCompile Include="choice.cpp" />
     <ClCompile Include="entityRef.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pokemon.cpp" />
@@ -143,7 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ability.h" />
-    <ClInclude Include="choice.h" />
     <ClInclude Include="entityRef.h" />
     <ClInclude Include="Pokemon.h" />
     <ClInclude Include="PokeType.h" />
