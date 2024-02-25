@@ -47,9 +47,6 @@ void startDialogue::Update()
 
 void startDialogue::dialogue()
 {
-
-    DrawTextEx(ft, TextFormat("player name : %s_", name.c_str()), Vector2{ 10, 10 }, 20, 1, Color(RED));
-
     if ((IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsKeyPressed(KEY_ENTER)) && index != dialogues.size() - 1 && dialogues[index] != " ") {
         index++;
     }
@@ -164,7 +161,15 @@ void startDialogue::dialogue()
         break;
 
     case 14:
-        combat.StartFight(1);
+
+        int fightResult = combat.StartFight(1);
+
+        if (fightResult == 1) {
+            cout << "vous avez gagné !!";
+        }
+        else if (fightResult == 0) {
+            cout << "vous avez perdu";
+        }
         break;
     }
 }

@@ -56,4 +56,22 @@ int Pokemon::GetMaxLife()
 	return maxLife;
 }
 
+int Pokemon::GetLevel()
+{
+	return level;
+}
+
+void Pokemon::WinFight(int AmountOfXP)
+{
+	if (xp + AmountOfXP < xpToLVL) {
+		xp += AmountOfXP;
+	}
+	else {
+		xp = 0;
+		level++;
+		xpToLVL += level * 2;
+	}
+	
+}
+
 

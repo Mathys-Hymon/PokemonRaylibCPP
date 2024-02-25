@@ -12,8 +12,9 @@ class Pokemon
 private:
     std::string name;
     std::string description;
-    int level;
+    int level = 1;
     int xp;
+    int xpToLVL = 5;
     int lifePoints;
     int maxLife;
     int attackdamage;
@@ -35,4 +36,6 @@ public:
     void GetDamage(int Damages);
     int GetLife();
     int GetMaxLife();
+    int GetLevel();
+    void WinFight(int AmountOfXP);
 };
