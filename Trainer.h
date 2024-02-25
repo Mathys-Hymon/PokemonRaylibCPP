@@ -20,7 +20,10 @@ public:
 	Trainer(std::string firstName, std::string lastName, std::string catchPhrase, int money, int life, std::vector<Pokemon> team);
 
 	void setName(string newName);
-	string& getName();
+	string& getFirstName();
+	string& getLastName();
+	string& getCatchPhrase();
 	void AddPokemon(Pokemon newPokemon);
+	std::vector<Pokemon>& getTeam();
 };
 

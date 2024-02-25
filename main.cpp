@@ -1,10 +1,14 @@
 #include <iostream>
 #include "raylib.h"
+#include "fight.h"
 #include "startDialogue.h"
+#include <locale>
 
 void Update();
 void Start();
 void Unload();
+
+
 
 startDialogue dialogue = startDialogue();
 

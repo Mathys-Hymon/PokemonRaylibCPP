@@ -20,7 +20,7 @@ std::vector<Ability> abilitys = {
 {"aqua-queue", 80, water, 50},
 {"bulles d'o", 65, water, 40},
 {"fouet lianes", 45, grass, 30},
-{"lance-soleil", 120, grass, 80},
+{"lance-soleil", 120, grass, 4},
 {"tranch'herbe", 55, grass, 35},
 {"bomb-graine", 80, grass, 50},
 {"méga-sangsue", 75, grass, 45},
@@ -94,10 +94,10 @@ std::vector<Ability> abilitys = {
 {"vibra soin", 0, fairy, 30},
 };
 std::vector<Pokemon> allPokemons = {
-{"bulbizarre", "il porte une graine sur le dos depuis sa naissance. en grandissant, la graine devient de plus en plus grosse.", grass, 1, 50, abilitys[16], abilitys[1]},
-{"herbizarre", "herbizarre émet un parfum très doux lorsqu'il est sur le point de fleurir. la fleur se développe lorsqu'il atteint la maturité.", grass, 2, 65, abilitys[16], abilitys[15]},
-{"florizarre", "la plante sur le dos de florizarre prend une couleur vive et émet une odeur très agréable quand il est en pleine santé.", grass, 3, 80, abilitys[16], abilitys[38]},
-{"salameche", "la flamme qui brûle au bout de sa queue indique son état émotionnel. elle brûle plus fort quand il est excité.", fire, 1, 45, abilitys[5], abilitys[9]},
+{"bulbizarre", "il porte une graine sur le dos depuis sa naissance. en grandissant, la graine devient de plus en plus grosse.", grass, 45, 49, abilitys[16], abilitys[1]},
+{"herbizarre", "herbizarre émet un parfum très doux lorsqu'il est sur le point de fleurir. la fleur se développe lorsqu'il atteint la maturité.", grass, 60, 62, abilitys[16], abilitys[15]},
+{"florizarre", "la plante sur le dos de florizarre prend une couleur vive et émet une odeur très agréable quand il est en pleine santé.", grass, 80, 82, abilitys[16], abilitys[38]},
+{"salameche", "la flamme qui brûle au bout de sa queue indique son état émotionnel. elle brûle plus fort quand il est excité.", fire, 39, 52, abilitys[5], abilitys[9]},
 {"reptincel", "reptincel a une flamme beaucoup plus forte que salameche. elle brûle si intensément qu'il peut chauffer ses environs.", fire, 2, 60, abilitys[5], abilitys[36]},
 {"dracaufeu", "dracaufeu a des ailes qui brillent dans le noir. il est fier de ces ailes magnifiques et les utilise pour voler majestueusement dans le ciel.", fire, 3, 78, abilitys[5], abilitys[32]},
 {"carapuce", "le dos de carapuce est un peu dur. quand il est menacé, il se retire à l'intérieur de sa carapace pour se protéger.", water, 1, 50, abilitys[10], abilitys[12]},
@@ -249,7 +249,7 @@ std::vector<Pokemon> allPokemons = {
 };
 std::vector<Trainer> trainers = {
    {"player","","",0,100,{}},
-   {"rival","","",0,100,{}},
+   {"rival","","allez viens te battre !",0,100,{}},
    {"dresseur normal", "smith", "la norme, mais solide !", 100, 3, {allPokemons[15], allPokemons[19], allPokemons[28]}},
    {"dresseur aquatique", "jones", "naviguons ensemble !", 120, 3, {allPokemons[40], allPokemons[53], allPokemons[68]}},
    {"dresseur végétal", "williams", "les plantes m'accompagnent !", 140, 4, {allPokemons[78], allPokemons[92], allPokemons[106], allPokemons[120]}},
@@ -258,13 +258,13 @@ std::vector<Trainer> trainers = {
    {"dresseur rocheux", "brown", "la solidité à toute épreuve !", 200, 5, {allPokemons[17], allPokemons[31], allPokemons[44], allPokemons[57], allPokemons[71]}},
    {"dresseur insecte", "davis", "l'essaim toujours prêt !", 220, 6, {allPokemons[76], allPokemons[89], allPokemons[102], allPokemons[115], allPokemons[128], allPokemons[141]}},
    {"dresseur psy", "miller", "l'esprit guide mes choix !", 240, 6, {allPokemons[22], allPokemons[37], allPokemons[54], allPokemons[69], allPokemons[84], allPokemons[99]}},
-   {"dresseur aérien", "harris", "l'envol vers la victoire !", 260, 6, {allPokemons[13], allPokemons[29], allPokemons[45], allPokemons[61], allPokemons[77], allPokemons[93]}},
-   {"dresseur combat", "jackson", "le dojo est ouvert !", 280, 6, {allPokemons[6], allPokemons[21], allPokemons[37], allPokemons[52], allPokemons[67], allPokemons[82]}},
-   {"dresseur spectral", "cooper", "les ombres m'obéissent !", 300, 6, {allPokemons[93], allPokemons[107], allPokemons[121], allPokemons[135], allPokemons[149], allPokemons[148]}},
-   {"dresseur glacial", "hill", "la glace sculpte ma destinée !", 320, 6, {allPokemons[81], allPokemons[95], allPokemons[109], allPokemons[123], allPokemons[137], allPokemons[141]}},
-   {"dresseur dragon", "carter", "l'âme du dragon m'habite !", 340, 6, {allPokemons[115], allPokemons[126], allPokemons[137], allPokemons[148], allPokemons[147], allPokemons[146]}},
-   {"dresseur poison", "ross", "les toxines sont mon allié !", 360, 6, {allPokemons[18], allPokemons[37], allPokemons[56], allPokemons[75], allPokemons[94], allPokemons[113]}},
-   {"dresseur ténébreux", "baker", "l'ombre guide ma stratégie !", 380, 6, {allPokemons[43], allPokemons[62], allPokemons[81], allPokemons[100], allPokemons[119], allPokemons[138]}},
+   {"dresseur aérien", "harris", "l'envol vers la victoire !", 260, 10, {allPokemons[13], allPokemons[29], allPokemons[45], allPokemons[61], allPokemons[77], allPokemons[93]}},
+   {"dresseur combat", "jackson", "le dojo est ouvert !", 280, 13, {allPokemons[6], allPokemons[21], allPokemons[37], allPokemons[52], allPokemons[67], allPokemons[82]}},
+   {"dresseur spectral", "cooper", "les ombres m'obéissent !", 300, 15, {allPokemons[93], allPokemons[107], allPokemons[121], allPokemons[135], allPokemons[149], allPokemons[148]}},
+   {"dresseur glacial", "hill", "la glace sculpte ma destinée !", 320, 20, {allPokemons[81], allPokemons[95], allPokemons[109], allPokemons[123], allPokemons[137], allPokemons[141]}},
+   {"dresseur dragon", "carter", "l'âme du dragon m'habite !", 340, 25, {allPokemons[115], allPokemons[126], allPokemons[137], allPokemons[148], allPokemons[147], allPokemons[146]}},
+   {"dresseur poison", "ross", "les toxines sont mon allié !", 360, 30, {allPokemons[18], allPokemons[37], allPokemons[56], allPokemons[75], allPokemons[94], allPokemons[113]}},
+   {"dresseur ténébreux", "baker", "l'ombre guide ma stratégie !", 380, 150, {allPokemons[43], allPokemons[62], allPokemons[81], allPokemons[100], allPokemons[119], allPokemons[138]}},
 
 };
 

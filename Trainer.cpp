@@ -10,12 +10,29 @@ void Trainer::setName(string newName)
 	firstName = newName;
 }
 
-string& Trainer::getName()
+string& Trainer::getFirstName()
 {
 	return firstName;
+}
+
+string& Trainer::getLastName()
+{
+	return lastName;
+}
+
+string& Trainer::getCatchPhrase()
+{
+	return catchphrase;
 }
 
 void Trainer::AddPokemon(Pokemon newPokemon)
 {
 	pokemons.push_back(newPokemon);
 }
+
+std::vector<Pokemon>& Trainer::getTeam()
+{
+	return pokemons;
+}
+
+

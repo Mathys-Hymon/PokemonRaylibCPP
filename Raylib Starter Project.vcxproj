@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="Ability.cpp" />
     <ClCompile Include="entityRef.cpp" />
+    <ClCompile Include="fight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pokemon.cpp" />
     <ClCompile Include="startDialogue.cpp" />
@@ -143,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="Ability.h" />
     <ClInclude Include="entityRef.h" />
+    <ClInclude Include="fight.h" />
     <ClInclude Include="Pokemon.h" />
     <ClInclude Include="PokeType.h" />
     <ClInclude Include="startDialogue.h" />
