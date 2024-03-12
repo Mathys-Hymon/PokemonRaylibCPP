@@ -21,6 +21,7 @@ public:
 	std::string GetTypeName();
 	int GetMaxEnergy();
 	int GetEnergy();
+	int GetDamage();
 	void LooseEnergy();
 	void ResetEnergy();
 };

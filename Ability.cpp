@@ -51,9 +51,14 @@ int Ability::GetEnergy()
 	return energy;
 }
 
+int Ability::GetDamage()
+{
+	return damage;
+}
+
 void Ability::LooseEnergy()
 {
-	energy -= 1;
+	energy--;
 }
 
 void Ability::ResetEnergy()

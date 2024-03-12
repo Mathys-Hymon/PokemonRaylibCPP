@@ -36,6 +36,7 @@ public:
     void GetDamage(int Damages);
     int GetLife();
     int GetMaxLife();
+    void setLife(int life);
     int GetLevel();
     void WinFight(int AmountOfXP);
 };

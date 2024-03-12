@@ -56,6 +56,11 @@ int Pokemon::GetMaxLife()
 	return maxLife;
 }
 
+void Pokemon::setLife(int _life)
+{
+	lifePoints = _life;
+}
+
 int Pokemon::GetLevel()
 {
 	return level;

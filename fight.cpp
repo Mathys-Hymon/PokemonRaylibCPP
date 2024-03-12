@@ -6,16 +6,18 @@ void fight::Load(Font font)
 	ft = font;
 	playerActifPokemon = -1;
 	opponentActifPokemon = -1;
+	abilityIndex = -1;
 }
+
 
 int fight::StartFight(int OpponentIndex)
 {
-	 winFight = -1;
-	 Opponent = OpponentIndex;
+	winFight = -1;
+	Opponent = OpponentIndex;
 
-	if (opponentActifPokemon == -1 || getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetLife() <= 0) {
-		if (opponentActifPokemon + 1 <= getTrainer(OpponentIndex).getTeam().size()) {
-			DrawTextEx(ft, TextFormat("L'adversaire envoie %s !", getTrainer(OpponentIndex).getTeam()[opponentActifPokemon + 1].GetName().c_str()), Vector2{ 50, 170 }, 20, 1, Color(BLACK));
+	if (opponentActifPokemon == -1 || getTrainer(Opponent).getTeam()[opponentActifPokemon].GetLife() <= 0) {
+		if (opponentActifPokemon + 1 <= getTrainer(Opponent).getTeam().size()) {
+			DrawTextEx(ft, TextFormat("L'adversaire envoie %s !", getTrainer(Opponent).getTeam()[opponentActifPokemon + 1].GetName().c_str()), Vector2{ 50, 170 }, 20, 1, Color(BLACK));
 			if (Timer <= 100)
 			{
 				Timer++;
@@ -28,71 +30,148 @@ int fight::StartFight(int OpponentIndex)
 		else {
 			winFight = 1;
 		}
-		
+
 	}
 	else if (playerActifPokemon == -1 || getTrainer(0).getTeam()[playerActifPokemon].GetLife() <= 0) {
-			playerActifPokemon = ChoosePokemon();
+		playerActifPokemon = ChoosePokemon();
 	}
 
-	else if (index == 0) {
-			std::string name = getTrainer(1).getFirstName();
-			std::string lName = getTrainer(1).getLastName();
-			std::string catchphrase = getTrainer(1).getCatchPhrase();
-			std::string text = name + " " + lName + " : " + catchphrase;
+	else if (index == 0)
+	{
+		std::string name = getTrainer(1).getFirstName();
+		std::string lName = getTrainer(1).getLastName();
+		std::string catchphrase = getTrainer(1).getCatchPhrase();
+		std::string text = name + " " + lName + " : " + catchphrase;
 
-			DrawTextEx(ft, text.c_str(), Vector2{ 50, 185 }, 20, 1, Color(BLACK));
-			SwitchDialogue();
-		}
+		DrawTextEx(ft, text.c_str(), Vector2{ 50, 185 }, 20, 1, Color(BLACK));
+		SwitchDialogue();
+	}
 
-		else {
+	else if (playerTurn) {
+		int choice = -1;
+		DrawFight();
 
-			DrawFight();
-			switch (index)
-			{
+		switch (index)
+		{
+		case 1:
+			Timer = 0;
+			switch (Choice({ "ATTAQUE", "OBJET", "FUITE" }, 3)) {
+			case 0:
+				index = 2;
+				break;
 			case 1:
-				switch (Choice({ "ATTAQUE", "OBJET", "FUITE" }, 3)) {
-				case 0:
-					index = 2;
-					break;
-				case 1:
-					index = 3;
-					break;
-				case 3:
-					index = 4;
-					break;
-				}
+				index = 3;
 				break;
-
-			case 2:  //attaque
-				for (int i = 0; i < getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys().size(); i++) {
-					DrawTextEx(ft, getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), Vector2{250, static_cast<float>(360 + i*35)}, 25, 1, Color(BLACK));
-					if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { 250, static_cast<float>(360 + i * 35), static_cast<float>(MeasureText(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), 25)), 30 })) {
-						DrawRectangleLines(250, 360 + i * 35, MeasureText(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), 25) + 5, 30, BLACK);
-						DrawTextEx(ft, TextFormat("TYPE / %s",getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetTypeName().c_str()), Vector2{30, 360}, 25, 1, Color(BLACK));
-
-						std::string abilityPower = to_string(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetEnergy()).c_str();
-						std::string abilityMaxPower = to_string(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetMaxEnergy()).c_str();
-						std::string textPower = abilityPower + "/" + abilityMaxPower;
-						DrawTextEx(ft, textPower.c_str(), Vector2{ 50, 385 }, 20, 1, Color(BLACK));
-						if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-							//choice = i;
-						}
-					}
-				}
-				break;
-
-			case 3:   //objets
-				break; 
-
-			case 4:  // Fuite
-				if (OpponentIndex != 1) {
-					winFight = 0;
-				}
-
+			case 2:
+				index = 4;
 				break;
 			}
-			
+			break;
+
+		case 2:  //attaque
+			if (abilityIndex == -1)
+			{
+				for (int i = 0; i < getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys().size(); i++) {
+
+					if (getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetEnergy() > 0) 
+					{
+						DrawTextEx(ft, getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), Vector2{ 250, static_cast<float>(360 + i * 35) }, 25, 1, Color(BLACK));
+						if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { 250, static_cast<float>(360 + i * 35), static_cast<float>(MeasureText(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), 25)), 30 })) {
+							DrawRectangleLines(250, 360 + i * 35, MeasureText(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), 25) + 5, 30, BLACK);
+							DrawTextEx(ft, TextFormat("TYPE / %s", getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetTypeName().c_str()), Vector2{ 30, 360 }, 25, 1, Color(BLACK));
+
+							std::string abilityPower = to_string(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetEnergy()).c_str();
+							std::string abilityMaxPower = to_string(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetMaxEnergy()).c_str();
+							std::string textPower = abilityPower + "/" + abilityMaxPower;
+							DrawTextEx(ft, textPower.c_str(), Vector2{ 50, 385 }, 20, 1, Color(BLACK));
+							if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+								abilityIndex = i;
+								getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].LooseEnergy();
+								//getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].setLife(getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetLife() - DamageCalculator(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetDamage(), getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetType(), getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetType()));
+							}
+						}
+					}
+					else 
+					{
+						DrawTextEx(ft, getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), Vector2{ 250, static_cast<float>(360 + i * 35) }, 25, 1, Color(GRAY));
+					}
+
+				}
+			}
+
+			else
+			{
+				std::string name = getTrainer(0).getTeam()[playerActifPokemon].GetName();
+				std::string abilityName = getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetName();
+				std::string efficacity = "";
+
+				if (DamageCalculator(1, getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetType(), getTrainer(Opponent).getTeam()[opponentActifPokemon].GetType()) < 1)
+				{
+					efficacity = "ce n'est pas très efficace";
+				}
+				else if (DamageCalculator(1, getTrainer(0).getTeam()[playerActifPokemon].GetType(), getTrainer(Opponent).getTeam()[opponentActifPokemon].GetType()) > 1)
+				{
+					efficacity = "c'est très efficace !!";
+				}
+				std::string text = name + " utilise " + abilityName + ", " + efficacity;
+
+				DrawTextEx(ft, to_string(DamageCalculator(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetDamage(), getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetType(), getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetType())).c_str(), Vector2{ 50, 385 }, 20, 1, Color(BLACK));
+				//DrawTextEx(ft, text.c_str(), Vector2{ 50, 385 }, 20, 1, Color(BLACK));
+
+				if (Timer <= 100)
+				{
+					Timer++;
+				}
+				else
+				{
+					index = 1;
+					playerTurn = false;
+					abilityIndex = -1;
+					Timer = 0;
+				}
+			}
+			break;
+
+		case 3:   //objets
+
+			DrawTextEx(ft, "aucun objet", Vector2{ 50, 385 }, 20, 1, Color(BLACK));
+			if (Timer <= 50)
+			{
+				Timer++;
+			}
+			else {
+				index = 1;
+				Timer = 0;
+			}
+			break;
+
+		case 4:  // Fuite
+
+			if (Opponent == 1) {
+				DrawTextEx(ft, "Eh tu pensais t'en tirer si facilement ?", Vector2{ 50, 385 }, 20, 1, Color(BLACK));
+				if (Timer <= 50)
+				{
+					Timer++;
+				}
+				else 
+				{
+					index = 1;
+					Timer = 0;
+				}
+			}
+			else 
+			{
+				winFight = 0;
+			}
+			break;
 		}
+	}
+
+	else 
+	{
+		DrawFight();
+
+    }
 
 
 	return winFight;
@@ -207,6 +286,15 @@ float fight::DamageCalculator(int damage, PokeType TypeAttaquant, PokeType TypeD
 		{1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 0.5, 1, 0.5},   // Dark
 		{1, 0.5, 0.5, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 0.5}  // Steel
 	};
+
+	if (matrice[TypeAttaquant][TypeDefenseur] < 1) 
+	{
+
+	}
+	else if (matrice[TypeAttaquant][TypeDefenseur] > 1) 
+	{
+
+	}
 	
 	return damage * matrice[TypeAttaquant][TypeDefenseur];
 }
