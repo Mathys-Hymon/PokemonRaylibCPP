@@ -25,10 +25,41 @@ string& Trainer::getCatchPhrase()
 	return catchphrase;
 }
 
+bool Trainer::getDefeated()
+{
+	return defeated;
+}
+
+int Trainer::getMoney()
+{
+	return money;
+}
+
+int Trainer::getPokeballs()
+{
+	return pokeball;
+}
+
+void Trainer::addPokeballs(int _pokeballs)
+{
+	pokeball += _pokeballs;
+}
+
+void Trainer::addMoney(int _money)
+{
+	money += _money;
+}
+
+void Trainer::setDefeated(bool _defeated)
+{
+	defeated = _defeated;
+}
+
 void Trainer::AddPokemon(Pokemon newPokemon)
 {
 	pokemons.push_back(newPokemon);
 }
+
 
 std::vector<Pokemon>& Trainer::getTeam()
 {

@@ -11,6 +11,14 @@ fight combat = fight();
 void startDialogue::Load(Font font)
 {
     
+    for (int i = 0; i <= 3; i++) 
+    {
+        std::string pokeball = "resources/ButtonsIcons/pokeball_" + std::to_string(i + 1) + ".png";
+        Image pokeballImage = LoadImage(pokeball.c_str());
+        pokeballSprite[i] = LoadTextureFromImage(pokeballImage);
+        UnloadImage(pokeballImage);
+    }
+    fightResult = -1;
     ft = font;
     name = "";
     index = 0;
@@ -31,13 +39,42 @@ void startDialogue::Load(Font font)
         {""},
         {""},
         {""},
-        {" "}
+        {" "},
+        {" "},
+        {" "},
     };
+    std::string grassPath = "resources/ButtonsIcons/herbes.png";
+    std::string lakePath = "resources/ButtonsIcons/canne.png";
+    std::string leaguePath = "resources/ButtonsIcons/league.png";
+    std::string centerPath = "resources/ButtonsIcons/pokecenter.png";
+
+    Image grassImage = LoadImage(grassPath.c_str());
+    Image lakeImage = LoadImage(lakePath.c_str());
+    Image leagueImage = LoadImage(leaguePath.c_str());
+    Image centerImage = LoadImage(centerPath.c_str());
+
+    centerSprite = LoadTextureFromImage(centerImage);
+    leagueSprite = LoadTextureFromImage(leagueImage);
+    grassSprite = LoadTextureFromImage(grassImage);
+    lakeSprite = LoadTextureFromImage(lakeImage);
+
+    UnloadImage(grassImage);
+    UnloadImage(lakeImage);
+    UnloadImage(leagueImage);
+    UnloadImage(centerImage);
 }
 
 void startDialogue::Unload()
 {
     UnloadPokeSprites();
+    UnloadTexture(centerSprite);
+    UnloadTexture(leagueSprite);
+    UnloadTexture(grassSprite);
+    UnloadTexture(lakeSprite);
+    for (int i = 0; i <= 3; i++)
+    {
+        UnloadTexture(pokeballSprite[i]);
+    }
 }
 
 void startDialogue::Update()
@@ -113,16 +150,19 @@ void startDialogue::dialogue()
         {
         case 0:
             getTrainer(0).AddPokemon(getPokemon(0));
+            getTrainer(0).getTeam()[0].SetPokeballSprite(pokeballSprite[0]);
             name = getTrainer(0).getTeam()[0].GetName().c_str();
             index++;
             break;
         case 1:
             getTrainer(0).AddPokemon(getPokemon(6));
+            getTrainer(0).getTeam()[0].SetPokeballSprite(pokeballSprite[0]);
             name = getTrainer(0).getTeam()[0].GetName().c_str();
             index++;
             break;
         case 2:
             getTrainer(0).AddPokemon(getPokemon(3));
+            getTrainer(0).getTeam()[0].SetPokeballSprite(pokeballSprite[0]);
             name = getTrainer(0).getTeam()[0].GetName().c_str();
             index++;
             break;
@@ -141,17 +181,26 @@ void startDialogue::dialogue()
     case 12:
         DrawTextEx(ft, TextFormat("C'est au tour de %s de choisir son pokemon !", getTrainer(1).getFirstName().c_str()), Vector2{ 50, 120 }, 20, 1, Color(BLACK));
         if (getTrainer(0).getTeam()[0].GetType() == water) {
+            if (getTrainer(1).getTeam().size() == 0) 
+            {
+                getTrainer(1).AddPokemon(getPokemon(0));
+            }
             DrawTextEx(ft, TextFormat("%s : Très bien, je choisi Bulbizarre !", getTrainer(1).getFirstName().c_str()), Vector2{ 50, 350 }, 20, 1, Color(BLACK));
-            getTrainer(1).AddPokemon(getPokemon(0));
-
         }
         else if (getTrainer(0).getTeam()[0].GetType() == fire) {
+            if (getTrainer(1).getTeam().size() == 0) 
+            {
+                getTrainer(1).AddPokemon(getPokemon(6));
+            }
             DrawTextEx(ft, TextFormat("%s : Très bien, je choisi Carapuce !", getTrainer(1).getFirstName().c_str()), Vector2{ 50, 350 }, 20, 1, Color(BLACK));
-            getTrainer(1).AddPokemon(getPokemon(6));
+
         }
         else {
             DrawTextEx(ft, TextFormat("%s : Très bien, je choisi Salamèche !", getTrainer(1).getFirstName().c_str()), Vector2{ 50, 350 }, 20, 1, Color(BLACK));
-            getTrainer(1).AddPokemon(getPokemon(3));
+            if (getTrainer(1).getTeam().size() == 0) 
+            {
+                getTrainer(1).AddPokemon(getPokemon(3));
+            }
         }
         DrawTextureEx(getTrainer(1).getTeam()[0].GetSprite(), Vector2{190, 150}, 0, 3, Color(WHITE));
         break;
@@ -162,14 +211,82 @@ void startDialogue::dialogue()
 
     case 14:
 
-        int fightResult = combat.StartFight(1);
+        if (fightResult == -1) 
+        {
+            fightResult = combat.StartFight(1);
+            ~combat.StartFight(1);
+        }
+        else 
+        {
+            index++;
+        }
+        break;
 
-        if (fightResult == 1) {
-            cout << "vous avez gagné !!";
+
+
+    case 15:   // main menu
+
+
+        DrawTextureEx(centerSprite, Vector2{ 30, 150 }, 0, 3, Color(WHITE));
+        DrawTextureEx(leagueSprite, Vector2{ 183, 150 }, 0, 3, Color(WHITE));
+        DrawTextureEx(grassSprite, Vector2{ 336, 150 }, 0, 3, Color(WHITE));
+
+        switch (choice({ "PokeCenter", "pokeLeague", "explorer" }, 3, 300))
+        {
+        case 0:
+            index = 16;
+            break;
+        case 1:
+            index = 17;
+            break;
+        case 2:
+            index = 18;
+            break;
         }
-        else if (fightResult == 0) {
-            cout << "vous avez perdu";
+        break;
+
+
+    case 16: // pokecenter
+
+        DrawTextureEx(centerSprite, Vector2{ 170, 50 }, 0, 4, Color(WHITE));
+        for (int i = 0; i < getTrainer(0).getTeam().size(); i++)
+        {
+            DrawTextureEx(getTrainer(0).getTeam()[i].getPokeballSprite(), Vector2{ static_cast <float>(30 * i), 230}, 0, 3, Color(WHITE));
+
+            DrawRectangle(static_cast <float>(30 + i), 320, (getTrainer(0).getTeam()[i].GetLife() / getTrainer(0).getTeam()[i].GetMaxLife()) * 100, 5, Color(GREEN));
+            DrawRectangleLines(static_cast <float>(30 + i), 320, 100, 5, BLACK);
         }
+
+
+        for (int i = 0; i <= 4; i++) 
+        {
+            DrawTextureEx(pokeballSprite[i], Vector2{ static_cast <float>(50 * i * 2), 400 }, 0, 2, Color(WHITE));
+        }
+
+        switch (choice({ "100$", "350$", "500$", "1500$" }, 2, 450))
+        {
+        default:
+            break;
+        }
+
+        for (int i = 0; i < getTrainer(0).getTeam().size(); i++)
+        {
+            getTrainer(0).getTeam()[i].setLife(getTrainer(0).getTeam()[i].GetMaxLife()/40);
+        }
+
+        break;
+
+    case 17: // partir chasser des pokemons sauvages 
+        switch (choice({ "hautes herbes", "lac" }, 3, 300))
+        {
+        default:
+            break;
+        }
+        break;
+        break;
+
+    case 18: //league pokemon
+
         break;
     }
 }

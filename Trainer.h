@@ -11,6 +11,12 @@ private:
 	std::string lastName;
 	std::string catchphrase;
 	int money;
+	int pokeball = 5;
+	int superBall;
+	int HyperBall;
+	int MasterBall;
+
+	bool defeated;
 	float lifePoints;
 	float maxLife;
 	std::vector<Pokemon> pokemons;
@@ -23,6 +29,12 @@ public:
 	string& getFirstName();
 	string& getLastName();
 	string& getCatchPhrase();
+	bool getDefeated();
+	int getMoney();
+	int getPokeballs();
+	void addPokeballs(int _pokeballs);
+	void addMoney(int _money);
+	void setDefeated(bool _defeated);
 	void AddPokemon(Pokemon newPokemon);
 	std::vector<Pokemon>& getTeam();
 };
