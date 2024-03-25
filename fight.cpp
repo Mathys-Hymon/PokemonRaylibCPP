@@ -25,7 +25,7 @@ int fight::StartFight(int OpponentIndex)
 
 		if (opponentActifPokemon + 1 < getTrainer(Opponent).getTeam().size())
 		{
-			DrawTextEx(ft, TextFormat("L adversaire envoie %s !", getTrainer(Opponent).getTeam()[opponentActifPokemon + 1].GetName().c_str()), Vector2{ 50, 170 }, 20, 1, Color(BLACK));
+			DrawTextEx(ft, TextFormat("L adversaire envoie %s !", getTrainer(Opponent).getTeam()[opponentActifPokemon + 1].GetName().c_str()), Vector2{ 220, 220 }, 20, 1, Color(BLACK));
 			if (Timer <= 100)
 			{
 				Timer++;
@@ -39,13 +39,14 @@ int fight::StartFight(int OpponentIndex)
 		{
 			if (Timer <= 200)
 			{
-				DrawTextEx(ft, TextFormat("%s : QUOI !! Incroyable ! J'ai pas pris le bon Pokemon", getTrainer(1).getFirstName().c_str()), Vector2{ 50, 350 }, 20, 1, Color(BLACK));
+				DrawTextEx(ft, TextFormat("%s : QUOI !! Incroyable ! J'ai pas pris le bon Pokemon", getTrainer(1).getFirstName().c_str()), Vector2{ 220, 350 }, 20, 1, Color(BLACK));
 				Timer++;
 			}
 
 			else 
 			{
 				Timer = 0;
+				getTrainer(0).addMoney(getTrainer(OpponentIndex).getMoney());
 				winFight = 1;
 			}
 
@@ -64,7 +65,7 @@ int fight::StartFight(int OpponentIndex)
 		std::string catchphrase = getTrainer(Opponent).getCatchPhrase();
 		std::string text = name + " " + lName + " : " + catchphrase;
 
-		DrawTextEx(ft, text.c_str(), Vector2{ 50, 185 }, 20, 1, Color(BLACK));
+		DrawTextEx(ft, text.c_str(), Vector2{ 220, 220 }, 20, 1, Color(BLACK));
 		SwitchDialogue();
 	}
 
@@ -97,15 +98,15 @@ int fight::StartFight(int OpponentIndex)
 
 					if (getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetEnergy() > 0) 
 					{
-						DrawTextEx(ft, getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), Vector2{ 250, static_cast<float>(360 + i * 35) }, 25, 1, Color(BLACK));
-						if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { 250, static_cast<float>(360 + i * 35), static_cast<float>(MeasureText(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), 25)), 30 })) {
-							DrawRectangleLines(250, 360 + i * 35, MeasureText(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), 25) + 5, 30, BLACK);
-							DrawTextEx(ft, TextFormat("TYPE / %s", getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetTypeName().c_str()), Vector2{ 30, 360 }, 25, 1, Color(BLACK));
+						DrawTextEx(ft, getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), Vector2{ 401, static_cast<float>(500 + i * 35) }, 25, 1, Color(BLACK));
+						if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { 401, static_cast<float>(500 + i * 35), static_cast<float>(MeasureText(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), 25)), 30 })) {
+							DrawRectangleLines(391, 500 + i * 35, MeasureText(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), 25) + 5, 30, BLACK);
+							DrawTextEx(ft, TextFormat("TYPE / %s", getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetTypeName().c_str()), Vector2{ 181, 500 }, 25, 1, Color(BLACK));
 
 							std::string abilityPower = to_string(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetEnergy()).c_str();
 							std::string abilityMaxPower = to_string(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetMaxEnergy()).c_str();
 							std::string textPower = abilityPower + "/" + abilityMaxPower;
-							DrawTextEx(ft, textPower.c_str(), Vector2{ 50, 385 }, 20, 1, Color(BLACK));
+							DrawTextEx(ft, textPower.c_str(), Vector2{ 201, 526 }, 20, 1, Color(BLACK));
 							if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) 
 							{
 								abilityIndex = i;
@@ -138,7 +139,7 @@ int fight::StartFight(int OpponentIndex)
 
 				std::string text = name + " utilise " + abilityName + ", " + efficacity;
 				
-				DrawTextEx(ft, text.c_str(), Vector2{ 50, 385 }, 20, 1, Color(BLACK));
+				DrawTextEx(ft, text.c_str(), Vector2{ 200, 538 }, 20, 1, Color(BLACK));
 
 				if (Timer <= 50)
 				{
@@ -167,7 +168,7 @@ int fight::StartFight(int OpponentIndex)
 
 		case 3:   //objets
 
-			DrawTextEx(ft, "aucun objet", Vector2{ 50, 385 }, 20, 1, Color(BLACK));
+			DrawTextEx(ft, "aucun objet", Vector2{ 201, 523 }, 20, 1, Color(BLACK));
 			if (Timer <= 50)
 			{
 				Timer++;
@@ -181,7 +182,7 @@ int fight::StartFight(int OpponentIndex)
 		case 4:  // Fuite
 
 			if (Opponent == 1) {
-				DrawTextEx(ft, "Tu pensais t en tirer si facilement ?", Vector2{ 50, 385 }, 20, 1, Color(BLACK));
+				DrawTextEx(ft, "Tu pensais t en tirer si facilement ?", Vector2{ 201, 523 }, 20, 1, Color(BLACK));
 				if (Timer <= 50)
 				{
 					Timer++;
@@ -194,7 +195,7 @@ int fight::StartFight(int OpponentIndex)
 			}
 			else 
 			{
-				DrawTextEx(ft, "Quoi tu bat en retraite ? Reviens quand tu seras pret", Vector2{ 50, 385 }, 20, 1, Color(BLACK));
+				DrawTextEx(ft, "Quoi tu bat en retraite ? Reviens quand tu seras pret", Vector2{ 201, 523 }, 20, 1, Color(BLACK));
 				if (Timer <= 100)
 				{
 					Timer++;
@@ -214,7 +215,7 @@ int fight::StartFight(int OpponentIndex)
 				std::string name = getTrainer(0).getTeam()[playerActifPokemon].GetName();
 				std::string xpWin = to_string((int)(getTrainer(Opponent).getTeam()[opponentActifPokemon].GetLevel() * (1 / DamageCalculator(1, getTrainer(0).getTeam()[playerActifPokemon].GetType(), getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetType()))));
 				std::string text = name + " a gagne " + xpWin + " xp";
-				DrawTextEx(ft, text.c_str(), Vector2{ 50, 385 }, 25, 1, Color(BLACK));
+				DrawTextEx(ft, text.c_str(), Vector2{ 201, 538 }, 25, 1, Color(BLACK));
 				Timer++;
 			}
 			else
@@ -254,7 +255,7 @@ int fight::StartFight(int OpponentIndex)
 
 			std::string text = name + " utilise " + abilityName + ", " + efficacity;
 
-			DrawTextEx(ft, text.c_str(), Vector2{ 50, 385 }, 20, 1, Color(RED));
+			DrawTextEx(ft, text.c_str(), Vector2{ 200, 538 }, 20, 1, Color(RED));
 
 			if (Timer <= 150)
 			{
@@ -301,15 +302,15 @@ int fight::ChoosePokemon()
 		if (getTrainer(0).getTeam()[i].GetLife() > 0) {
 			pokemonAlive++;
 
-			DrawTextureEx(getTrainer(0).getTeam()[i].GetSprite(), Vector2{ 50, static_cast <float>(100 + i * 50) }, 0, 2, Color(WHITE));
-			DrawTextEx(ft, getTrainer(0).getTeam()[i].GetName().c_str(), Vector2{ 150, static_cast <float>(130 + i * 80) }, 20, 1, Color(BLACK));
+			DrawTextureEx(getTrainer(0).getTeam()[i].GetSprite(), Vector2{ 201, static_cast <float>(238 + i * 50) }, 0, 2, Color(WHITE));
+			DrawTextEx(ft, getTrainer(0).getTeam()[i].GetName().c_str(), Vector2{ 301, static_cast <float>(268 + i * 80) }, 20, 1, Color(BLACK));
 
 			std::string pokemonLife = to_string((int)getTrainer(0).getTeam()[i].GetMaxLife()).c_str();
 			std::string pokemonMaxLife = to_string((int)getTrainer(0).getTeam()[i].GetLife()).c_str();
 			std::string textLife = pokemonLife + "/" + pokemonMaxLife;
-			DrawTextEx(ft, textLife.c_str(), Vector2{ 150, static_cast <float>(150 + i * 80) }, 20, 1, Color(BLACK));
-			if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { 150, static_cast<float>(130 + i * 80), static_cast<float>(MeasureText(getTrainer(0).getTeam()[i].GetName().c_str(), 20)), 30 })) {
-				DrawRectangleLines(140, 130 + i * 80, MeasureText(getTrainer(0).getTeam()[i].GetName().c_str(), 20) + 5, 30, BLACK);
+			DrawTextEx(ft, textLife.c_str(), Vector2{ 301, static_cast <float>(288 + i * 80) }, 20, 1, Color(BLACK));
+			if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { 301, static_cast<float>(268 + i * 80), static_cast<float>(MeasureText(getTrainer(0).getTeam()[i].GetName().c_str(), 20)), 30 })) {
+				DrawRectangleLines(291, 268 + i * 80, MeasureText(getTrainer(0).getTeam()[i].GetName().c_str(), 20) + 5, 30, BLACK);
 				if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 					choice = i;
 				}
@@ -337,40 +338,40 @@ void fight::SwitchDialogue()
 void fight::DrawFight(Pokemon _pokemon)
 {
 	//PLAYER
-	DrawTextureEx(getTrainer(0).getTeam()[playerActifPokemon].GetSprite(), Vector2{ 35, 210 }, 0, 4, Color(WHITE));
-	DrawTextEx(ft, getTrainer(0).getTeam()[playerActifPokemon].GetName().c_str(), Vector2{ 250, 250 }, 40, 1, Color(BLACK));
-	DrawTextEx(ft, TextFormat("LVL : %s",to_string(getTrainer(0).getTeam()[playerActifPokemon].GetLevel()).c_str()), Vector2{ 250, 285 }, 15, 1, Color(BLACK));
-	DrawTextEx(ft, "HP :", Vector2{250, 300}, 20, 1, Color(BLACK));
-	DrawRectangle(280, 307, (getTrainer(0).getTeam()[playerActifPokemon].GetLife() / getTrainer(0).getTeam()[playerActifPokemon].GetMaxLife()) *100, 5, Color(GREEN));
-	DrawRectangleLines(280, 307, 100, 5, BLACK);
+	DrawTextureEx(getTrainer(0).getTeam()[playerActifPokemon].GetSprite(), Vector2{ 186, 348 }, 0, 4, Color(WHITE));
+	DrawTextEx(ft, getTrainer(0).getTeam()[playerActifPokemon].GetName().c_str(), Vector2{ 401, 388 }, 40, 1, Color(BLACK));
+	DrawTextEx(ft, TextFormat("LVL : %s",to_string(getTrainer(0).getTeam()[playerActifPokemon].GetLevel()).c_str()), Vector2{ 401, 423 }, 15, 1, Color(BLACK));
+	DrawTextEx(ft, "HP :", Vector2{ 401, 438}, 20, 1, Color(BLACK));
+	DrawRectangle(430, 445, (getTrainer(0).getTeam()[playerActifPokemon].GetLife() / getTrainer(0).getTeam()[playerActifPokemon].GetMaxLife()) *100, 5, Color(GREEN));
+	DrawRectangleLines(430, 445, 100, 5, BLACK);
 	std::string pokemonMaxLife = to_string((int)getTrainer(0).getTeam()[playerActifPokemon].GetMaxLife()).c_str();
 	std::string pokemonLife = to_string((int)getTrainer(0).getTeam()[playerActifPokemon].GetLife()).c_str();
 	std::string textLife = pokemonLife + "/" + pokemonMaxLife;
-	DrawTextEx(ft, textLife.c_str(), Vector2{ 290 , 315 }, 21, 1, Color(BLACK));
+	DrawTextEx(ft, textLife.c_str(), Vector2{ 450 , 453 }, 21, 1, Color(BLACK));
 
 	//Textbox
-	DrawRectangle(10, 350, 480, 140, Color(RAYWHITE));
-	DrawRectangleLines(10, 350, 480, 140, BLACK);
+	DrawRectangle(161, 488, 480, 140, Color(RAYWHITE));
+	DrawRectangleLines(161, 488, 480, 140, BLACK);
 
 
 	//OPPONENT
 
-	DrawTextureEx(_pokemon.GetSprite(), Vector2{ 300, 5 }, 0, 4, Color(WHITE));
-	DrawTextEx(ft, _pokemon.GetName().c_str(), Vector2{ 100, 50 }, 40, 1, Color(BLACK));
-	DrawTextEx(ft, TextFormat("LVL : %s", to_string(_pokemon.GetLevel()).c_str()), Vector2{ 100, 95 }, 15, 1, Color(BLACK));
-	DrawTextEx(ft, "HP :", Vector2{ 100, 110 }, 20, 1, Color(BLACK));
-	DrawRectangle(130, 118,(_pokemon.GetLife() / _pokemon.GetMaxLife()) * 100, 5, Color(GREEN));
-	DrawRectangleLines(130, 118, 100, 5, BLACK);
+	DrawTextureEx(_pokemon.GetSprite(), Vector2{ 451, 143 }, 0, 4, Color(WHITE));
+	DrawTextEx(ft, _pokemon.GetName().c_str(), Vector2{ 251, 188 }, 40, 1, Color(BLACK));
+	DrawTextEx(ft, TextFormat("LVL : %s", to_string(_pokemon.GetLevel()).c_str()), Vector2{ 251, 233 }, 15, 1, Color(BLACK));
+	DrawTextEx(ft, "HP :", Vector2{ 251, 248 }, 20, 1, Color(BLACK));
+	DrawRectangle(281, 256,(_pokemon.GetLife() / _pokemon.GetMaxLife()) * 100, 5, Color(GREEN));
+	DrawRectangleLines(281, 256, 100, 5, BLACK);
 }
 
 int fight::Choice(const std::vector<std::string>& options, int spacing)
 {
 	int selectedOption = -1;
 	for (size_t i = 0; i < options.size(); ++i) {
-		DrawTextEx(ft, options[i].c_str(), Vector2{ static_cast <float>(50 + i * 50 * spacing), 400 }, 20, 1, Color(BLACK));
+		DrawTextEx(ft, options[i].c_str(), Vector2{ static_cast <float>(204 + i * 50 * spacing), 538 }, 20, 1, Color(BLACK));
 
-		if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { static_cast<float>(50 + i * 50 * spacing), 400, static_cast<float>(MeasureText(options[i].c_str(), 20)), 30 })) {
-			DrawRectangleLines(45 + i * 50 * spacing, 400, MeasureText(options[i].c_str(), 20) + 5, 30, BLACK);
+		if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { static_cast<float>(204 + i * 50 * spacing), 538, static_cast<float>(MeasureText(options[i].c_str(), 20)), 30 })) {
+			DrawRectangleLines(196 + i * 50 * spacing, 538, MeasureText(options[i].c_str(), 20) + 5, 30, BLACK);
 			if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 				selectedOption = i;
 			}

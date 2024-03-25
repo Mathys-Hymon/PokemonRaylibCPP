@@ -14,6 +14,7 @@ private:
 	Texture2D pokeballSprite[4];
 	Texture2D grassSprite;
 	Texture2D leagueSprite;
+	Texture2D cadreSprite;
 
 	int index;
 	int fightResult;
@@ -24,5 +25,5 @@ public:
 	void Update();
 	void dialogue();
 	void setName(std::string& name);
-	int choice(const std::vector<std::string>& options, int spacing, float yPos);
+	int choice(const std::vector<std::string>& options, float spacing, float yPos);
 };

@@ -25,7 +25,7 @@ int main() {
 
 void Start() 
 {
-    InitWindow(500, 500, "Pokemon RAYLIB");
+    InitWindow(803, 777, "Pokemon RAYLIB");
     SetTargetFPS(60);
     Font ft = LoadFont("resources/fonts/pokemon_pixel_font.ttf");
     dialogue.Load(ft);

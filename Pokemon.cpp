@@ -26,7 +26,7 @@ void Pokemon::SetPokeballSprite(Texture2D NewSprite)
 	pokeballSprite = NewSprite;
 }
 
-void Pokemon::SetName(string& newName)
+void Pokemon::SetName(string newName)
 {
 	name = newName;
 }

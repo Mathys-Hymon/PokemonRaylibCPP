@@ -15,7 +15,6 @@ private:
 	int superBall;
 	int HyperBall;
 	int MasterBall;
-
 	bool defeated;
 	float lifePoints;
 	float maxLife;
@@ -31,8 +30,8 @@ public:
 	string& getCatchPhrase();
 	bool getDefeated();
 	int getMoney();
-	int getPokeballs();
-	void addPokeballs(int _pokeballs);
+	int getPokeballs(int _typePokeball);
+	void addPokeballs(int _typePokeball, int _pokeballs);
 	void addMoney(int _money);
 	void setDefeated(bool _defeated);
 	void AddPokemon(Pokemon newPokemon);
