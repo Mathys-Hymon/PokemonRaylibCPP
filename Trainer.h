@@ -10,12 +10,12 @@ private:
 	std::string firstName;
 	std::string lastName;
 	std::string catchphrase;
-	int money;
+	int money = 0;
 	int pokeball = 5;
-	int superBall;
-	int HyperBall;
-	int MasterBall;
-	bool defeated;
+	int superBall = 0;
+	int HyperBall = 0;
+	int MasterBall = 0;
+	bool defeated = false;
 	float lifePoints;
 	float maxLife;
 	std::vector<Pokemon> pokemons;

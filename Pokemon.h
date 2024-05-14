@@ -13,13 +13,14 @@ private:
     std::string name;
     std::string description;
     int level = 1;
-    int xp;
+    int xp = 0;
     int xpToLVL = 5;
     float lifePoints;
     float maxLife;
     int attackdamage;
     PokeType type;
     std::vector<Ability> abilitys;
+    std::vector<Ability> abilityChoice;
     Texture2D sprite;
     Texture2D pokeballSprite;
 
@@ -27,7 +28,7 @@ public:
 
     Pokemon(std::string name, std::string description, PokeType type, int life, int damage, Ability ability1, Ability ability2);
 
-    void SetSprite(Texture2D& NewSprite);
+    void SetSprite(Texture& NewSprite);
     Texture2D& GetSprite();
     Texture2D& getPokeballSprite();
     void SetPokeballSprite(Texture2D NewSprite);
@@ -41,6 +42,8 @@ public:
     float GetLife();
     float GetMaxLife();
     void setLife(int life);
+    void FullHeal();
     int GetLevel();
-    void WinFight(int AmountOfXP);
+    bool WinFight(int AmountOfXP);
+    void LevelUp();
 };

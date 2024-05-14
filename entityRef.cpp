@@ -250,23 +250,32 @@ std::vector<Pokemon> allPokemons = {
 std::vector<Trainer> trainers = {
    {"player","","",0,100,{}},
    {"rival","","allez viens te battre !",100,100,{}},
-   {"dresseur normal", "smith", "la norme, mais solide !", 200, 3, {allPokemons[15], allPokemons[19], allPokemons[28]}},
-   {"dresseur aquatique", "jones", "naviguons ensemble !", 220, 3, {allPokemons[40], allPokemons[53], allPokemons[68]}},
-   {"dresseur végétal", "williams", "les plantes m'accompagnent !", 250, 4, {allPokemons[78], allPokemons[92], allPokemons[106], allPokemons[120]}},
-   {"dresseur pyro", "taylor", "le feu qui brûle en moi !", 300, 4, {allPokemons[8], allPokemons[26], allPokemons[34], allPokemons[49]}},
-   {"dresseur électro", "anderson", "une décharge d'énergie !", 340, 5, {allPokemons[85], allPokemons[97], allPokemons[110], allPokemons[123], allPokemons[137]}},
-   {"dresseur rocheux", "brown", "la solidité à toute épreuve !", 380, 5, {allPokemons[17], allPokemons[31], allPokemons[44], allPokemons[57], allPokemons[71]}},
-   {"dresseur insecte", "davis", "l'essaim toujours prêt !", 420, 6, {allPokemons[76], allPokemons[89], allPokemons[102], allPokemons[115], allPokemons[128], allPokemons[141]}},
-   {"dresseur psy", "miller", "l'esprit guide mes choix !", 460, 6, {allPokemons[22], allPokemons[37], allPokemons[54], allPokemons[69], allPokemons[84], allPokemons[99]}},
-   {"dresseur aérien", "harris", "l'envol vers la victoire !", 560, 10, {allPokemons[13], allPokemons[29], allPokemons[45], allPokemons[61], allPokemons[77], allPokemons[93]}},
-   {"dresseur combat", "jackson", "le dojo est ouvert !", 600, 13, {allPokemons[6], allPokemons[21], allPokemons[37], allPokemons[52], allPokemons[67], allPokemons[82]}},
-   {"dresseur spectral", "cooper", "les ombres m'obéissent !", 750, 15, {allPokemons[93], allPokemons[107], allPokemons[121], allPokemons[135], allPokemons[149], allPokemons[148]}},
-   {"dresseur glacial", "hill", "la glace sculpte ma destinée !", 900, 20, {allPokemons[81], allPokemons[95], allPokemons[109], allPokemons[123], allPokemons[137], allPokemons[141]}},
-   {"dresseur dragon", "carter", "l'âme du dragon m'habite !", 1000, 25, {allPokemons[115], allPokemons[126], allPokemons[137], allPokemons[148], allPokemons[147], allPokemons[146]}},
-   {"dresseur poison", "ross", "les toxines sont mon allié !", 1250, 30, {allPokemons[18], allPokemons[37], allPokemons[56], allPokemons[75], allPokemons[94], allPokemons[113]}},
-   {"dresseur ténébreux", "baker", "l'ombre guide ma stratégie !", 1500, 150, {allPokemons[43], allPokemons[62], allPokemons[81], allPokemons[100], allPokemons[119], allPokemons[138]}},
-
+   {"dresseur normal", "smith", "la norme, mais solide !", 200, 3, {}},
+   {"dresseur aquatique", "jones", "naviguons ensemble !", 220, 3, {}},
+   {"dresseur végétal", "williams", "les plantes m'accompagnent !", 250, 4, {}},
+   {"dresseur pyro", "taylor", "le feu qui brûle en moi !", 300, 4, {}},
 };
+
+void LoadTrainers()
+{
+	trainers[2].AddPokemon(allPokemons[15]);
+	trainers[2].AddPokemon(allPokemons[19]);
+	trainers[2].AddPokemon(allPokemons[28]);
+
+	trainers[3].AddPokemon(allPokemons[40]);
+	trainers[3].AddPokemon(allPokemons[53]);
+	trainers[3].AddPokemon(allPokemons[68]);
+
+	trainers[4].AddPokemon(allPokemons[78]);
+	trainers[4].AddPokemon(allPokemons[92]);
+	trainers[4].AddPokemon(allPokemons[106]);
+	trainers[4].AddPokemon(allPokemons[120]);
+
+	trainers[5].AddPokemon(allPokemons[8]);
+	trainers[5].AddPokemon(allPokemons[26]);
+	trainers[5].AddPokemon(allPokemons[34]);
+	trainers[5].AddPokemon(allPokemons[49]);
+}
 
 Ability getAbility(int index)
 {
@@ -290,9 +299,32 @@ Pokemon getRandomPokemon(PokeType type)
 		}
 	}
 
-	int randomPokemon = GetRandomValue(0, allPokemons.size() - 1);
+	int randomPokemon = GetRandomValue(0, pokemonByType.size() - 1);
 
+	return pokemonByType[randomPokemon];
+}
+
+Pokemon getRandomPokemon()
+{
+	int randomPokemon = GetRandomValue(0, allPokemons.size() - 1);
 	return allPokemons[randomPokemon];
+}
+
+Ability getRandomAbility(PokeType type)
+{
+	std::vector<Ability> abilitysByType;
+
+	for (int i = 0; i < abilitys.size() - 1; i++)
+	{
+		if (abilitys[i].GetType() == type)
+		{
+			abilitysByType.push_back(abilitys[i]);
+		}
+	}
+
+	int randomAbility = GetRandomValue(0, abilitysByType.size() - 1);
+
+	return abilitysByType[randomAbility];
 }
 
 Trainer& getTrainer(int index)
@@ -300,12 +332,14 @@ Trainer& getTrainer(int index)
 	return trainers[index];
 }
 
+
+
 void LoadPokeSprites()
 {
 	for (int i = 0; i < allPokemons.size(); i++) {
 		std::string imagePath = "resources/pokemonsImages/pokemon_" + std::to_string(i + 1) + ".png";
 		Image pokemonImage = LoadImage(imagePath.c_str());
-		Texture2D pokemonSprite = LoadTextureFromImage(pokemonImage);
+		Texture pokemonSprite = LoadTextureFromImage(pokemonImage);
 		allPokemons[i].SetSprite(pokemonSprite);
 		UnloadImage(pokemonImage);
 	}

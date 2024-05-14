@@ -14,15 +14,22 @@ void fight::Load(Font font)
 
 int fight::StartFight(int OpponentIndex)
 {
-	if (Opponent != OpponentIndex)
+	if (Opponent != OpponentIndex || winFight == 0)
 	{
+		Timer = 0;
 		Opponent = OpponentIndex;
+		index = 0;
+		playerActifPokemon = -1;
+		opponentActifPokemon = -1;
+		opponentAbilityIndex = -1;
+		abilityIndex = -1;
+		playerTurn = true;
 		winFight = -1;
 	}
 
 	if (opponentActifPokemon == -1 || getTrainer(Opponent).getTeam()[opponentActifPokemon].GetLife() <= 0) 
 	{
-
+		playerTurn = true;
 		if (opponentActifPokemon + 1 < getTrainer(Opponent).getTeam().size())
 		{
 			DrawTextEx(ft, TextFormat("L adversaire envoie %s !", getTrainer(Opponent).getTeam()[opponentActifPokemon + 1].GetName().c_str()), Vector2{ 220, 220 }, 20, 1, Color(BLACK));
@@ -39,7 +46,8 @@ int fight::StartFight(int OpponentIndex)
 		{
 			if (Timer <= 200)
 			{
-				DrawTextEx(ft, TextFormat("%s : QUOI !! Incroyable ! J'ai pas pris le bon Pokemon", getTrainer(1).getFirstName().c_str()), Vector2{ 220, 350 }, 20, 1, Color(BLACK));
+				DrawTextEx(ft, TextFormat("Tu remporte : %s P !!", to_string(getTrainer(OpponentIndex).getMoney()).c_str()), Vector2{220, 400}, 20, 1, Color(BLACK));
+				DrawTextEx(ft, TextFormat("%s : QUOI !! Incroyable ! J'ai pas pris le bon Pokemon", getTrainer(Opponent).getFirstName().c_str()), Vector2{ 220, 350 }, 20, 1, Color(BLACK));
 				Timer++;
 			}
 
@@ -55,7 +63,9 @@ int fight::StartFight(int OpponentIndex)
 
 	}
 	else if (playerActifPokemon == -1 || getTrainer(0).getTeam()[playerActifPokemon].GetLife() <= 0) {
-		playerActifPokemon = ChoosePokemon();
+
+			int test = ChoosePokemon();
+			playerActifPokemon = test;
 	}
 
 	else if (index == 0)
@@ -157,7 +167,6 @@ int fight::StartFight(int OpponentIndex)
 					{
 						getTrainer(Opponent).getTeam()[opponentActifPokemon].GetDamage(DamageCalculator(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetDamage(), getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetType(), getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetType()));
 						index = 1;
-						cout << getTrainer(Opponent).getTeam()[opponentActifPokemon].GetLife();
 						playerTurn = false;
 						abilityIndex = -1;
 						Timer = 0;
@@ -202,6 +211,9 @@ int fight::StartFight(int OpponentIndex)
 				}
 				else
 				{
+					for (int i = 0; i < getTrainer(Opponent).getTeam().size(); i++) {
+						getTrainer(Opponent).getTeam()[i].FullHeal();
+					}
 					winFight = 0;
 					Timer = 0;
 				}
@@ -220,14 +232,40 @@ int fight::StartFight(int OpponentIndex)
 			}
 			else
 			{
-				getTrainer(0).getTeam()[playerActifPokemon].WinFight(getTrainer(Opponent).getTeam()[opponentActifPokemon].GetLevel()* (1 / DamageCalculator(1, getTrainer(0).getTeam()[playerActifPokemon].GetType(), getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetType())));
-				getTrainer(Opponent).getTeam()[opponentActifPokemon].GetDamage(DamageCalculator(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetDamage(), getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetType(), getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetType()));
-				index = 1;
-				playerTurn = false;
-				abilityIndex = -1;
-				Timer = 0;
+				if (getTrainer(0).getTeam()[playerActifPokemon].WinFight(getTrainer(Opponent).getTeam()[opponentActifPokemon].GetLevel() * (1 / DamageCalculator(1, getTrainer(0).getTeam()[playerActifPokemon].GetType(), getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetType())))) {
+					index = 6;
+					playerTurn = false;
+					abilityIndex = -1;
+					Timer = 0;
+				}
+				else {
+					getTrainer(Opponent).getTeam()[opponentActifPokemon].GetDamage(DamageCalculator(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetDamage(), getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetType(), getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetType()));
+					index = 1;
+					playerTurn = false;
+					abilityIndex = -1;
+					Timer = 0;
+				}
+
 			}
 			break;
+
+		case 6: //Level UP
+			int newAbility = -1;
+
+			if (Timer <= 100)
+			{
+				std::string name = getTrainer(0).getTeam()[playerActifPokemon].GetName();
+				std::string newLevel = to_string(getTrainer(0).getTeam()[playerActifPokemon].GetLevel());
+				std::string text = name + " viens de monter au niveau " + newLevel;
+				DrawTextEx(ft, text.c_str(), Vector2{ 201, 538 }, 25, 1, Color(BLACK));
+				Timer++;
+			}
+			else
+			{
+				DrawTextEx(ft, "Choisi une nouvelle habilitée a apprendre a ton pokemon !", Vector2{201, 538}, 25, 1, Color(BLACK));
+
+
+			}
 		}
 	}
 
@@ -257,7 +295,7 @@ int fight::StartFight(int OpponentIndex)
 
 			DrawTextEx(ft, text.c_str(), Vector2{ 200, 538 }, 20, 1, Color(RED));
 
-			if (Timer <= 150)
+			if (Timer <= 200)
 			{
 				Timer++;
 			}
@@ -279,19 +317,42 @@ int fight::StartFight(int OpponentIndex)
 	return winFight;
 }
 
-void fight::WildPokemon(bool isLake)
+
+
+int fight::WildPokemon(bool isLake)
 {
-	if (wildPokemonIndex == -1) 
+	if (!wildPokemonValid) 
 	{
+
+		Timer = 0;
+		index = 0;
+		playerActifPokemon = -1;
+		opponentAbilityIndex = -1;
+		abilityIndex = -1;
+		playerTurn = true;
+		winFight = -1;
+
+
 		if (isLake) 
 		{
-			
+			wildPokemon = getRandomPokemon(water);
+			wildPokemonValid = true;
 		}
 		else 
 		{
-
+			wildPokemon = getRandomPokemon();
+			wildPokemonValid = true;
 		}
 	}
+
+	else if(wildPokemon.GetLife() <= 0)
+	{
+		winFight = 1;
+	}
+
+
+
+	return winFight;
 }
 
 int fight::ChoosePokemon()
@@ -299,7 +360,7 @@ int fight::ChoosePokemon()
 	int pokemonAlive = 0;
 	int choice = -1;
 	for (int i = 0; i < getTrainer(0).getTeam().size(); i++) {
-		if (getTrainer(0).getTeam()[i].GetLife() > 0) {
+		if (getTrainer(0).getTeam()[i].GetLife() > 0.0) {
 			pokemonAlive++;
 
 			DrawTextureEx(getTrainer(0).getTeam()[i].GetSprite(), Vector2{ 201, static_cast <float>(238 + i * 50) }, 0, 2, Color(WHITE));
@@ -319,7 +380,12 @@ int fight::ChoosePokemon()
 	}
 
 	if (pokemonAlive == 0) {
-		winFight = 0;
+
+			Timer = 0;
+			for (int i = 0; i < getTrainer(Opponent).getTeam().size(); i++) {
+				getTrainer(Opponent).getTeam()[i].FullHeal();
+			}
+			winFight = 0;
 		return -1;
 	}
 	else {
@@ -367,7 +433,7 @@ void fight::DrawFight(Pokemon _pokemon)
 int fight::Choice(const std::vector<std::string>& options, int spacing)
 {
 	int selectedOption = -1;
-	for (size_t i = 0; i < options.size(); ++i) {
+	for (int i = 0; i < options.size(); ++i) {
 		DrawTextEx(ft, options[i].c_str(), Vector2{ static_cast <float>(204 + i * 50 * spacing), 538 }, 20, 1, Color(BLACK));
 
 		if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { static_cast<float>(204 + i * 50 * spacing), 538, static_cast<float>(MeasureText(options[i].c_str(), 20)), 30 })) {

@@ -17,6 +17,7 @@ private:
 	Texture2D cadreSprite;
 
 	int index;
+	int opponentIndex = 1;
 	int fightResult;
 
 public:
@@ -26,4 +27,5 @@ public:
 	void dialogue();
 	void setName(std::string& name);
 	int choice(const std::vector<std::string>& options, float spacing, float yPos);
+	bool button(std::string name, Vector2 pos, Vector2 size);
 };

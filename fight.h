@@ -6,11 +6,13 @@
 #include <vector>
 
 class fight {
+
 private:
 	int playerActifPokemon;
 	int winFight;
 	int opponentActifPokemon;
-	int wildPokemonIndex = -1;
+	Pokemon wildPokemon;
+	bool wildPokemonValid = false;
 	int Opponent;
 	int abilityIndex;
 	int opponentAbilityIndex = -1;
@@ -20,9 +22,12 @@ private:
 	bool playerTurn = true;
 
 public:
+	fight();
+	~fight();
+
 	void Load(Font font);
 	int StartFight(int OpponentIndex);
-	void WildPokemon(bool isLake);
+	int WildPokemon(bool isLake);
 	int ChoosePokemon();
 	void SwitchDialogue();
 	void DrawFight(Pokemon _pokemon);

@@ -1,4 +1,5 @@
 #include "Pokemon.h"
+
 Pokemon::Pokemon(std::string newName, std::string newDescription, PokeType newType, int damage, int newLife, Ability ability1, Ability ability2)
 	: name(newName), description(newDescription), level(1), lifePoints(newLife * 5), maxLife(newLife *  5), type(newType)
 {
@@ -6,7 +7,7 @@ Pokemon::Pokemon(std::string newName, std::string newDescription, PokeType newTy
 	abilitys.push_back(ability2);
 }
 
-void Pokemon::SetSprite(Texture2D& NewSprite)
+void Pokemon::SetSprite(Texture& NewSprite)
 {
 	sprite = NewSprite;
 }
@@ -76,20 +77,36 @@ void Pokemon::setLife(int _life)
 
 }
 
+void Pokemon::FullHeal()
+{
+	lifePoints = maxLife;
+}
+
 int Pokemon::GetLevel()
 {
 	return level;
 }
 
-void Pokemon::WinFight(int AmountOfXP)
+bool Pokemon::WinFight(int AmountOfXP)
 {
 	if (xp + AmountOfXP < xpToLVL) {
 		xp += AmountOfXP;
+		return false;
 	}
 	else {
 		xp = 0;
 		level++;
 		xpToLVL += level * 2;
+		return true;
+	}
+}
+
+void Pokemon::LevelUp()
+{
+	if (abilityChoice.empty()) {
+		for (int i = 0; i < 3; i++) {
+
+		}
 	}
 }
 

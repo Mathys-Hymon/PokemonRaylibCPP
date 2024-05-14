@@ -1,5 +1,4 @@
 #include "startDialogue.h"
-#include "entityRef.h"
 #include "fight.h"
 
 int startDialogue = 0;
@@ -10,7 +9,6 @@ fight combat = fight();
 
 void startDialogue::Load(Font font)
 {
-    
     for (int i = 0; i <= 3; i++) 
     {
         std::string pokeball = "resources/ButtonsIcons/pokeball_" + std::to_string(i + 1) + ".png";
@@ -23,6 +21,7 @@ void startDialogue::Load(Font font)
     name = "";
     index = 0;
     LoadPokeSprites();
+    LoadTrainers();
     combat.Load(ft);
     dialogues = {
         {"Bienvenue dans le monde magique des POKEMON !"},
@@ -39,6 +38,8 @@ void startDialogue::Load(Font font)
         {" "},
         {""},
         {""},
+        {" "},
+ /*15*/   {" "},
         {" "},
         {" "},
         {" "},
@@ -227,13 +228,14 @@ void startDialogue::dialogue()
         }
         else 
         {
+            fightResult = -1;
             index++;
         }
         break;
 
 
 
-    case 15:   // main menu
+    case 15: // main menu
 
 
         DrawTextureEx(centerSprite, Vector2{ 200, 280 }, 0, 3, Color(WHITE));
@@ -278,7 +280,9 @@ void startDialogue::dialogue()
             DrawTextureEx(pokeballSprite[i], Vector2{ static_cast <float>(206 + (i * 50)), 523 }, 0, 2, Color(WHITE));
             DrawTextEx(ft, to_string(getTrainer(0).getPokeballs(i)).c_str(), Vector2{static_cast <float>(210 + (i * 50)) , 523}, 21, 1, Color(BLACK));
         }
-
+        if (button("RETOUR", { 580,580 }, { 20,20 })) {
+            index = 15;
+        }
         switch (choice({ "100P", "350P", "500P", "1500P" }, 1, 588))
         {
         case 0:
@@ -322,16 +326,57 @@ void startDialogue::dialogue()
         }
         break;
 
-    case 17: // partir chasser des pokemons sauvages 
+    case 17:  //league pokemon
+
+        if (getTrainer(opponentIndex).getDefeated() == true && fightResult == -1) {
+            opponentIndex++;
+        }
+        else {
+            if (fightResult == -1)
+            {
+                fightResult = combat.StartFight(opponentIndex);
+                ~combat.StartFight(opponentIndex);
+            }
+            else
+            {
+                fightResult = -1;
+               index =  15;
+            }
+        }
+
+        break;
+
+    case 18:  // partir chasser des pokemons sauvages 
+
         switch (choice({ "hautes herbes", "lac" }, 3, 438))
         {
+        case 0:
+            if (fightResult == -1)
+            {
+                fightResult = combat.WildPokemon(false);
+            }
+            else
+            {
+                fightResult = -1;
+                index = 15;
+            }
+            break;
+
+        case 1:
+            if (fightResult == -1)
+            {
+                fightResult = combat.WildPokemon(true);
+            }
+            else
+            {
+                fightResult = -1;
+                index = 15;
+            }
+            break;
+
         default:
             break;
         }
-        break;
-
-    case 18: //league pokemon
-
         break;
     }
 }
@@ -373,4 +418,24 @@ int startDialogue::choice(const std::vector<std::string>& options, float spacing
         }
 
         return selectedOption;
+}
+
+bool startDialogue::button(std::string name, Vector2 pos, Vector2 size)
+{
+    //DrawRectangle(pos.x - (MeasureText(name.c_str(), 20) + size.x) / 2, pos.y, size.x + static_cast<float>(MeasureText(name.c_str(), 20)), size.y, BLUE);
+    DrawTextEx(ft, name.c_str(), {pos.x - (MeasureText(name.c_str(), 20)) / 2, pos.y + size.y / 3}, 20, 0 ,BLACK);
+
+    if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { pos.x - (MeasureText(name.c_str(), 20) + size.x) / 2, pos.y,size.x + static_cast<float>(MeasureText(name.c_str(), 20)), size.y })) {
+
+        DrawRectangleLines(pos.x - (MeasureText(name.c_str(), 20) + size.x) / 2, pos.y, size.x + static_cast<float>(MeasureText(name.c_str(), 20)), size.y, BLACK);
+        DrawTextEx(ft, name.c_str(), { pos.x - (MeasureText(name.c_str(), 20)) / 2, pos.y + size.y / 3 }, 20, 0, BLACK);
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    return false;
 }
