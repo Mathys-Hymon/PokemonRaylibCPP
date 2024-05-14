@@ -270,7 +270,8 @@ void startDialogue::dialogue()
             DrawTextureEx(getTrainer(0).getTeam()[i].getPokeballSprite(), Vector2{ static_cast <float>(200 + (i * 30)), 368}, 0, 3, Color(WHITE));
 
             DrawRectangle(static_cast <float>(220 + (i * 30)), 380, (getTrainer(0).getTeam()[i].GetLife() / getTrainer(0).getTeam()[i].GetMaxLife()) * 50, 5, Color(GREEN));
-            DrawRectangleLines(static_cast <float>(30 + i), 320, 50, 5, BLACK);
+            DrawRectangleLines(static_cast <float>(220 + (i * 30)), 380, 50, 5, BLACK);
+            getTrainer(0).getTeam()[i].RechargeAbilitys();
         }
 
 

@@ -47,6 +47,14 @@ void Pokemon::SetAbility(Ability newAbility)
 	abilitys.push_back(newAbility);
 }
 
+void Pokemon::RechargeAbilitys()
+{
+	for (int i = 0; i < abilitys.size(); i++)
+	{
+		abilitys[i].ResetEnergy();
+	}
+}
+
 void Pokemon::SetLevel(int level_)
 {
 	level = level_;
@@ -88,6 +96,11 @@ void Pokemon::FullHeal()
 	lifePoints = maxLife;
 }
 
+void Pokemon::RemoveAbility(int index)
+{
+	abilitys.erase(abilitys.begin() + index);
+}
+
 int Pokemon::GetLevel()
 {
 	return level;
@@ -104,15 +117,6 @@ bool Pokemon::WinFight(int AmountOfXP)
 		level++;
 		xpToLVL += level * 2;
 		return true;
-	}
-}
-
-void Pokemon::LevelUp()
-{
-	if (abilityChoice.empty()) {
-		for (int i = 0; i < 3; i++) {
-
-		}
 	}
 }
 

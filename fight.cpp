@@ -2,6 +2,9 @@
 
 
 Pokemon wildPokemonRef = getPokemon(3);
+Ability randomAbility1 = getRandomAbility(water);
+Ability randomAbility2 = getRandomAbility(water);
+Ability randomAbility3 = getRandomAbility(water);
 
 fight::fight()
 {
@@ -244,10 +247,13 @@ int fight::StartFight(int OpponentIndex)
 			else
 			{
 				if (getTrainer(0).getTeam()[playerActifPokemon].WinFight(getTrainer(Opponent).getTeam()[opponentActifPokemon].GetLevel() * (1 / DamageCalculator(1, getTrainer(0).getTeam()[playerActifPokemon].GetType(), getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetType())))) {
+					getTrainer(Opponent).getTeam()[opponentActifPokemon].GetDamage(DamageCalculator(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetDamage(), getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetType(), getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetType()));
 					index = 6;
-					playerTurn = false;
+					playerTurn = true;
 					abilityIndex = -1;
 					Timer = 0;
+					std::cout << "LEVEL UP " << std::endl;
+
 				}
 				else {
 					getTrainer(Opponent).getTeam()[opponentActifPokemon].GetDamage(DamageCalculator(getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetDamage(), getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[abilityIndex].GetType(), getTrainer(OpponentIndex).getTeam()[opponentActifPokemon].GetType()));
@@ -256,27 +262,123 @@ int fight::StartFight(int OpponentIndex)
 					abilityIndex = -1;
 					Timer = 0;
 				}
-
+				std::cout << getTrainer(0).getTeam()[playerActifPokemon].GetXpRatio().x << " / " << getTrainer(0).getTeam()[playerActifPokemon].GetXpRatio().y << std::endl;
 			}
 			break;
 
 		case 6: //Level UP
 			int newAbility = -1;
 
-			if (Timer <= 100)
+			if (Timer <= 250 && !AbilitysSet)
 			{
 				std::string name = getTrainer(0).getTeam()[playerActifPokemon].GetName();
 				std::string newLevel = to_string(getTrainer(0).getTeam()[playerActifPokemon].GetLevel());
 				std::string text = name + " viens de monter au niveau " + newLevel;
-				DrawTextEx(ft, text.c_str(), Vector2{ 201, 538 }, 25, 1, Color(BLACK));
+				DrawTextEx(ft, text.c_str(), Vector2{ 201, 510 }, 25, 1, Color(BLACK));
+				DrawTextEx(ft, TextFormat("Choisi une nouvelle habilitée pour %s !", getTrainer(0).getTeam()[playerActifPokemon].GetName().c_str()), Vector2{ 201, 550 }, 25, 1, Color(BLACK));
 				Timer++;
 			}
 			else
 			{
-				DrawTextEx(ft, "Choisi une nouvelle habilitée a apprendre a ton pokemon !", Vector2{201, 538}, 25, 1, Color(BLACK));
+				if (!AbilitysSet) {
+					randomAbility1 = getRandomAbility(getTrainer(0).getTeam()[playerActifPokemon].GetType());
+					randomAbility2 = getRandomAbility(getTrainer(0).getTeam()[playerActifPokemon].GetType());
+					randomAbility3 = getRandomAbility(normal);
+					AbilitysSet = true;
+					Timer = 0;
+				}
+				else {
+
+					if (getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys().size() <= 3) {
+
+
+						switch (Choice({ randomAbility1.GetName(),randomAbility2.GetName(),randomAbility3.GetName() }, 2.2))
+						{
+						case 0:
+							getTrainer(0).getTeam()[playerActifPokemon].SetAbility(randomAbility1);
+							if (getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys().size() <= 3) {
+								index = 1;
+								wildPokemonValid = false;
+								AbilitysSet = false;
+							}
+							Timer = 0;
+							break;
+
+						case 1:
+
+
+							getTrainer(0).getTeam()[playerActifPokemon].SetAbility(randomAbility2);
+							if (getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys().size() <= 3) {
+								index = 1;
+								wildPokemonValid = false;
+								AbilitysSet = false;
+							}
+							Timer = 0;
+							break;
+
+						case 2:
+
+							getTrainer(0).getTeam()[playerActifPokemon].SetAbility(randomAbility3);
+							if (getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys().size() <= 3) {
+								index = 1;
+								wildPokemonValid = false;
+								AbilitysSet = false;
+							}
+							Timer = 0;
+							break;
+
+						default:
+							break;
+						}
+					}
+					else {
+
+						if (Timer <= 100) {
+							Timer++;
+						}
+						else {
+							DrawTextEx(ft, TextFormat("%s possede trop d'abilitees, choisissez en une a enlever", getTrainer(0).getTeam()[playerActifPokemon].GetName().c_str()), Vector2{ 201, 480 }, 25, 1, Color(BLACK));
+
+							switch (Choice({ getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[0].GetName(), getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[1].GetName(), getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[2].GetName(),getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[3].GetName() }, 2.5))
+							{
+							case 0:
+								getTrainer(0).getTeam()[playerActifPokemon].RemoveAbility(0);
+								index = 1;
+								AbilitysSet = false;
+								Timer = 0;
+								break;
+
+							case 1:
+								getTrainer(0).getTeam()[playerActifPokemon].RemoveAbility(1);
+								index = 1;
+								AbilitysSet = false;
+								Timer = 0;
+								break;
+
+							case 2:
+								getTrainer(0).getTeam()[playerActifPokemon].RemoveAbility(2);
+								index = 1;
+								AbilitysSet = false;
+								Timer = 0;
+								break;
+
+							case 3:
+								getTrainer(0).getTeam()[playerActifPokemon].RemoveAbility(3);
+								index = 1;
+								AbilitysSet = false;
+								Timer = 0;
+								break;
+							default:
+								break;
+							}
+						}
+					}
+
+				}
 
 
 			}
+			break;
 		}
 	}
 
@@ -424,7 +526,7 @@ int fight::WildPokemon()
 					}
 					else
 					{
-						DrawTextEx(ft, getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), Vector2{ 250, static_cast<float>(360 + i * 35) }, 25, 1, Color(GRAY));
+						DrawTextEx(ft, getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[i].GetName().c_str(), Vector2{ 401, static_cast<float>(500 + i * 35) }, 25, 1, Color(DARKGRAY));
 					}
 
 				}
@@ -542,25 +644,129 @@ int fight::WildPokemon()
 			}
 			break;
 
+
 		case 6: //Level UP
 			int newAbility = -1;
 
-			if (Timer <= 300)
+			if (Timer <= 250 && !AbilitysSet)
 			{
 				std::string name = getTrainer(0).getTeam()[playerActifPokemon].GetName();
 				std::string newLevel = to_string(getTrainer(0).getTeam()[playerActifPokemon].GetLevel());
 				std::string text = name + " viens de monter au niveau " + newLevel;
-				DrawTextEx(ft, text.c_str(), Vector2{ 201, 538 }, 25, 1, Color(BLACK));
+				DrawTextEx(ft, text.c_str(), Vector2{ 201, 510 }, 25, 1, Color(BLACK));
+				DrawTextEx(ft, TextFormat("Choisi une nouvelle habilitée pour %s !", getTrainer(0).getTeam()[playerActifPokemon].GetName().c_str()), Vector2{ 201, 550 }, 25, 1, Color(BLACK));
 				Timer++;
 			}
 			else
 			{
-				Timer = 0;
-				DrawTextEx(ft, "Choisi une nouvelle habilitée a apprendre a ton pokemon !", Vector2{ 201, 538 }, 25, 1, Color(BLACK));
+				if (!AbilitysSet) {
+					 randomAbility1 = getRandomAbility(getTrainer(0).getTeam()[playerActifPokemon].GetType());
+					 randomAbility2 = getRandomAbility(getTrainer(0).getTeam()[playerActifPokemon].GetType());
+					 randomAbility3 = getRandomAbility(normal);
+					 AbilitysSet = true;
+					 Timer = 0;
+				}
+				else {
+
+					if (getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys().size() <= 3) {
 
 
-				winFight = 1;
-				wildPokemonValid = false;
+						switch (Choice({ randomAbility1.GetName(),randomAbility2.GetName(),randomAbility3.GetName() }, 3))
+						{
+						case 0:
+							getTrainer(0).getTeam()[playerActifPokemon].SetAbility(randomAbility1);
+							if (getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys().size() <= 3) {
+								index = 1;
+								winFight = 1;
+								wildPokemonValid = false;
+								AbilitysSet = false;
+							}
+							Timer = 0;
+							break;
+
+						case 1:
+
+
+							getTrainer(0).getTeam()[playerActifPokemon].SetAbility(randomAbility2);
+							if (getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys().size() <= 3) {
+								index = 1;
+								winFight = 1;
+								wildPokemonValid = false;
+								AbilitysSet = false;
+							}
+							Timer = 0;
+							break;
+
+						case 2:
+
+							getTrainer(0).getTeam()[playerActifPokemon].SetAbility(randomAbility3);
+							if (getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys().size() <= 3) {
+								index = 1;
+								winFight = 1;
+								wildPokemonValid = false;
+								AbilitysSet = false;
+							}
+							Timer = 0;
+							break;
+
+						default:
+							break;
+						}
+					}
+					else {
+
+						if (Timer <= 100) {
+							Timer++;
+						}
+						else {
+							DrawTextEx(ft, TextFormat("%s possede trop d'abilitees, choisissez en une a enlever", getTrainer(0).getTeam()[playerActifPokemon].GetName().c_str()), Vector2{ 201, 480 }, 25, 1, Color(BLACK));
+
+							switch (Choice({ getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[0].GetName(), getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[1].GetName(), getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[2].GetName(),getTrainer(0).getTeam()[playerActifPokemon].GetAbilitys()[3].GetName() }, 2.5))
+							{
+							case 0:
+								getTrainer(0).getTeam()[playerActifPokemon].RemoveAbility(0);
+								index = 1;
+								winFight = 1;
+								wildPokemonValid = false;
+								AbilitysSet = false;
+								Timer = 0;
+								break;
+
+							case 1:
+								getTrainer(0).getTeam()[playerActifPokemon].RemoveAbility(1);
+								index = 1;
+								winFight = 1;
+								wildPokemonValid = false;
+								AbilitysSet = false;
+								Timer = 0;
+								break;
+
+							case 2:
+								getTrainer(0).getTeam()[playerActifPokemon].RemoveAbility(2);
+								index = 1;
+								winFight = 1;
+								wildPokemonValid = false;
+								AbilitysSet = false;
+								Timer = 0;
+								break;
+
+							case 3:
+								getTrainer(0).getTeam()[playerActifPokemon].RemoveAbility(3);
+								index = 1;
+								winFight = 1;
+								wildPokemonValid = false;
+								AbilitysSet = false;
+								Timer = 0;
+								break;
+							default:
+								break;
+							}
+						}
+					}
+					
+				}
+
+
 			}
 		}
 	}

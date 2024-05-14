@@ -20,6 +20,8 @@ private:
 	int index;
 	bool playerTurn = true;
 
+	bool AbilitysSet = false;
+
 public:
 	fight();
 	~fight();

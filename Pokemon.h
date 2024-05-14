@@ -20,7 +20,6 @@ private:
     int attackdamage;
     PokeType type;
     std::vector<Ability> abilitys;
-    std::vector<Ability> abilityChoice;
     Texture2D sprite;
     Texture2D pokeballSprite;
 
@@ -37,6 +36,7 @@ public:
     string& GetName();
     PokeType GetType();
     void SetAbility(Ability newAbility);
+    void RechargeAbilitys();
     void SetLevel(int level);
     std::vector<Ability>& GetAbilitys();
     void GetDamage(int Damages);
@@ -44,9 +44,9 @@ public:
     float GetMaxLife();
     void setLife(int life);
     void FullHeal();
+    void RemoveAbility(int index);
     int GetLevel();
     bool WinFight(int AmountOfXP);
-    void LevelUp();
 
     //debug
 

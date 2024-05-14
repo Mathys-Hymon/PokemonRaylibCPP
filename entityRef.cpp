@@ -6,7 +6,7 @@ std::vector<Ability> abilitys = {
 	{"",0,normal,0},
 {"charge", 40, normal, 20},
 {"ultralaser", 150, normal, 5},
-{"retour", 70, normal, 50},
+{"revers", 70, normal, 50},
 {"vive-attaque", 50, normal, 30},
 {"coud'krâne", 85, normal, 55},
 {"flammèche", 40, fire, 25},
