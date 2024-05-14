@@ -47,6 +47,12 @@ void Pokemon::SetAbility(Ability newAbility)
 	abilitys.push_back(newAbility);
 }
 
+void Pokemon::SetLevel(int level_)
+{
+	level = level_;
+	xp = level / 5;
+}
+
 std::vector<Ability>& Pokemon::GetAbilitys()
 {
 	return abilitys;
@@ -108,6 +114,11 @@ void Pokemon::LevelUp()
 
 		}
 	}
+}
+
+Vector2 Pokemon::GetXpRatio()
+{
+	return { (float)xp, (float)xpToLVL };
 }
 
 

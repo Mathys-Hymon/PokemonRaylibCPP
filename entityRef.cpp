@@ -287,23 +287,6 @@ Pokemon getPokemon(int index)
 	return allPokemons[index];
 }
 
-Pokemon getRandomPokemon(PokeType type)
-{
-	std::vector<Pokemon> pokemonByType;
-
-	for (int i = 0; i < allPokemons.size() - 1; i++) 
-	{
-		if (allPokemons[i].GetType() == type) 
-		{
-			pokemonByType.push_back(allPokemons[i]);
-		}
-	}
-
-	int randomPokemon = GetRandomValue(0, pokemonByType.size() - 1);
-
-	return pokemonByType[randomPokemon];
-}
-
 Pokemon getRandomPokemon()
 {
 	int randomPokemon = GetRandomValue(0, allPokemons.size() - 1);

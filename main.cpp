@@ -1,6 +1,5 @@
 #include <iostream>
 #include "raylib.h"
-#include "fight.h"
 #include "startDialogue.h"
 #include <locale>
 

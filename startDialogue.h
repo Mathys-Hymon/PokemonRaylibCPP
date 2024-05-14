@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "fight.h"
 #include "raylib.h"
 #include <string>
 #include <vector>

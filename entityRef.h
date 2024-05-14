@@ -7,7 +7,6 @@
 
     Ability getAbility(int index);
     Pokemon getPokemon(int index);
-    Pokemon getRandomPokemon(PokeType type);
     Pokemon getRandomPokemon();
     Ability getRandomAbility(PokeType type);
     Trainer& getTrainer(int index);

@@ -37,6 +37,7 @@ public:
     string& GetName();
     PokeType GetType();
     void SetAbility(Ability newAbility);
+    void SetLevel(int level);
     std::vector<Ability>& GetAbilitys();
     void GetDamage(int Damages);
     float GetLife();
@@ -46,4 +47,8 @@ public:
     int GetLevel();
     bool WinFight(int AmountOfXP);
     void LevelUp();
+
+    //debug
+
+    Vector2 GetXpRatio();
 };

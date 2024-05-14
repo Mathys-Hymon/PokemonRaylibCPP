@@ -11,7 +11,6 @@ private:
 	int playerActifPokemon;
 	int winFight;
 	int opponentActifPokemon;
-	Pokemon wildPokemon;
 	bool wildPokemonValid = false;
 	int Opponent;
 	int abilityIndex;
@@ -27,7 +26,7 @@ public:
 
 	void Load(Font font);
 	int StartFight(int OpponentIndex);
-	int WildPokemon(bool isLake);
+	int WildPokemon();
 	int ChoosePokemon();
 	void SwitchDialogue();
 	void DrawFight(Pokemon _pokemon);

@@ -1,5 +1,4 @@
 #include "startDialogue.h"
-#include "fight.h"
 
 int startDialogue = 0;
 int explorationDialogue = 0;
@@ -348,34 +347,15 @@ void startDialogue::dialogue()
 
     case 18:  // partir chasser des pokemons sauvages 
 
-        switch (choice({ "hautes herbes", "lac" }, 3, 438))
+        if (fightResult == -1)
         {
-        case 0:
-            if (fightResult == -1)
-            {
-                fightResult = combat.WildPokemon(false);
-            }
-            else
-            {
-                fightResult = -1;
-                index = 15;
-            }
-            break;
-
-        case 1:
-            if (fightResult == -1)
-            {
-                fightResult = combat.WildPokemon(true);
-            }
-            else
-            {
-                fightResult = -1;
-                index = 15;
-            }
-            break;
-
-        default:
-            break;
+            fightResult = combat.WildPokemon();
+            ~combat.WildPokemon();
+        }
+        else
+        {
+            fightResult = -1;
+            index = 15;
         }
         break;
     }
