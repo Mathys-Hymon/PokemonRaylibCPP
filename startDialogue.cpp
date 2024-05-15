@@ -8,13 +8,6 @@ fight combat = fight();
 
 void startDialogue::Load(Font font)
 {
-    for (int i = 0; i <= 3; i++) 
-    {
-        std::string pokeball = "resources/ButtonsIcons/pokeball_" + std::to_string(i + 1) + ".png";
-        Image pokeballImage = LoadImage(pokeball.c_str());
-        pokeballSprite[i] = LoadTextureFromImage(pokeballImage);
-        UnloadImage(pokeballImage);
-    }
     fightResult = -1;
     ft = font;
     name = "";
@@ -76,10 +69,6 @@ void startDialogue::Unload()
     UnloadTexture(grassSprite);
     UnloadTexture(lakeSprite);
     UnloadTexture(cadreSprite);
-    for (int i = 0; i <= 3; i++)
-    {
-        UnloadTexture(pokeballSprite[i]);
-    }
 }
 
 void startDialogue::Update()
@@ -157,19 +146,16 @@ void startDialogue::dialogue()
         {
         case 0:
             getTrainer(0).AddPokemon(getPokemon(0));
-            getTrainer(0).getTeam()[0].SetPokeballSprite(pokeballSprite[0]);
             name = getTrainer(0).getTeam()[0].GetName().c_str();
             index++;
             break;
         case 1:
             getTrainer(0).AddPokemon(getPokemon(6));
-            getTrainer(0).getTeam()[0].SetPokeballSprite(pokeballSprite[0]);
             name = getTrainer(0).getTeam()[0].GetName().c_str();
             index++;
             break;
         case 2:
             getTrainer(0).AddPokemon(getPokemon(3));
-            getTrainer(0).getTeam()[0].SetPokeballSprite(pokeballSprite[0]);
             name = getTrainer(0).getTeam()[0].GetName().c_str();
             index++;
             break;
@@ -267,55 +253,25 @@ void startDialogue::dialogue()
 
         for (int i = 0; i < getTrainer(0).getTeam().size(); i++)
         {
-            DrawTextureEx(getTrainer(0).getTeam()[i].getPokeballSprite(), Vector2{ static_cast <float>(200 + (i * 30)), 368}, 0, 3, Color(WHITE));
+            DrawTextureEx(getTrainer(0).getTeam()[i].getPokeballSprite(), Vector2{ static_cast <float>(200 + (i * 80)), 368}, 0, 2.5, Color(WHITE));
 
-            DrawRectangle(static_cast <float>(220 + (i * 30)), 380, (getTrainer(0).getTeam()[i].GetLife() / getTrainer(0).getTeam()[i].GetMaxLife()) * 50, 5, Color(GREEN));
-            DrawRectangleLines(static_cast <float>(220 + (i * 30)), 380, 50, 5, BLACK);
+            DrawRectangle(static_cast <float>(220 + (i * 80)), 380, (getTrainer(0).getTeam()[i].GetLife() / getTrainer(0).getTeam()[i].GetMaxLife()) * 50, 5, Color(GREEN));
+            DrawRectangleLines(static_cast <float>(220 + (i * 80)), 380, 50, 5, BLACK);
             getTrainer(0).getTeam()[i].RechargeAbilitys();
         }
 
 
-        for (int i = 0; i < 4; i++) 
-        {
-            DrawTextureEx(pokeballSprite[i], Vector2{ static_cast <float>(206 + (i * 50)), 523 }, 0, 2, Color(WHITE));
-            DrawTextEx(ft, to_string(getTrainer(0).getPokeballs(i)).c_str(), Vector2{static_cast <float>(210 + (i * 50)) , 523}, 21, 1, Color(BLACK));
-        }
+        DrawTextureEx(getPokemon(0).getPokeballSprite(), Vector2{ 215, 500 }, 0, 2, Color(WHITE));
+        DrawTextEx(ft, to_string(getTrainer(0).getPokeballs()).c_str(), Vector2{ 205 , 510 }, 21, 1, Color(BLACK));
         if (button("RETOUR", { 580,580 }, { 20,20 })) {
             index = 15;
         }
-        switch (choice({ "100P", "350P", "500P", "1500P" }, 1, 588))
-        {
-        case 0:
-            if (getTrainer(0).getMoney() >= 100) 
+        if (button("100P", { 230,550 }, { 20,20 })) {
+            if (getTrainer(0).getMoney() >= 100)
             {
                 getTrainer(0).addMoney(-100);
-                getTrainer(0).addPokeballs(0, 1);
+                getTrainer(0).addPokeball(1);
             }
-            break;
-
-        case 1:
-            if (getTrainer(0).getMoney() >= 350)
-            {
-                getTrainer(0).addMoney(-350);
-                getTrainer(0).addPokeballs(1, 1);
-            }
-            break;
-
-        case 2:
-            if (getTrainer(0).getMoney() >= 500)
-            {
-                getTrainer(0).addMoney(-500);
-                getTrainer(0).addPokeballs(2, 1);
-            }
-            break;
-
-        case 3:
-            if (getTrainer(0).getMoney() >= 1500)
-            {
-                getTrainer(0).addMoney(-1500);
-                getTrainer(0).addPokeballs(3, 1);
-            }
-            break;
         }
 
         for (int i = 0; i < getTrainer(0).getTeam().size(); i++)
@@ -346,7 +302,7 @@ void startDialogue::dialogue()
 
         break;
 
-    case 18:  // partir chasser des pokemons sauvages 
+    case 18:  //  pokemons sauvages 
 
         if (fightResult == -1)
         {

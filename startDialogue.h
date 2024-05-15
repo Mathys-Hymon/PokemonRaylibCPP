@@ -12,7 +12,6 @@ private:
 	std::string name;
 	Texture2D centerSprite;
 	Texture2D lakeSprite;
-	Texture2D pokeballSprite[4];
 	Texture2D grassSprite;
 	Texture2D leagueSprite;
 	Texture2D cadreSprite;

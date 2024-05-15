@@ -22,7 +22,7 @@ Texture2D& Pokemon::getPokeballSprite()
 	return pokeballSprite;
 }
 
-void Pokemon::SetPokeballSprite(Texture2D NewSprite)
+void Pokemon::SetPokeballSprite(Texture2D& NewSprite)
 {
 	pokeballSprite = NewSprite;
 }
@@ -69,6 +69,10 @@ std::vector<Ability>& Pokemon::GetAbilitys()
 void Pokemon::GetDamage(int Damages)
 {
 	lifePoints -= Damages;
+
+	if (lifePoints < 0) {
+		lifePoints = 0;
+	}
 }
 
 float Pokemon::GetLife()

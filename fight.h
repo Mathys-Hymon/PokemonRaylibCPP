@@ -18,6 +18,7 @@ private:
 	int Timer = 0;
 	Font ft;
 	int index;
+	int catchAttemp = 0;
 	bool playerTurn = true;
 
 	bool AbilitysSet = false;

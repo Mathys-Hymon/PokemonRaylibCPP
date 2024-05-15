@@ -101,14 +101,19 @@ int fight::StartFight(int OpponentIndex)
 		{
 		case 1:
 			Timer = 0;
-			switch (Choice({ "ATTAQUE", "OBJET", "FUITE" }, 3)) {
+			switch (Choice({ "ATTAQUE", "OBJET", "PKMN","FUITE" }, 2.3)) {
 			case 0:
 				index = 2;
 				break;
 			case 1:
 				index = 3;
 				break;
+
 			case 2:
+				playerActifPokemon = -1;
+				playerTurn = false;
+				break;
+			case 3:
 				index = 4;
 				break;
 			}
@@ -191,15 +196,16 @@ int fight::StartFight(int OpponentIndex)
 
 		case 3:   //objets
 
-			DrawTextEx(ft, "aucun objet", Vector2{ 201, 523 }, 20, 1, Color(BLACK));
-			if (Timer <= 50)
-			{
-				Timer++;
-			}
-			else {
-				index = 1;
-				Timer = 0;
-			}
+				DrawTextEx(ft, "aucun objet", Vector2{ 201, 523 }, 20, 1, Color(BLACK));
+				if (Timer <= 50)
+				{
+					Timer++;
+				}
+				else {
+					index = 1;
+					Timer = 0;
+				}
+			
 			break;
 
 		case 4:  // Fuite
@@ -487,14 +493,19 @@ int fight::WildPokemon()
 		{
 		case 1:
 			Timer = 0;
-			switch (Choice({ "ATTAQUE", "OBJET", "FUITE" }, 3)) {
+			switch (Choice({ "ATTAQUE", "OBJET", "PKMN","FUITE"}, 2.3)) {
 			case 0:
 				index = 2;
 				break;
 			case 1:
 				index = 3;
 				break;
+
 			case 2:
+				playerActifPokemon = -1;
+				playerTurn = false;
+				break;
+			case 3:
 				index = 4;
 				break;
 			}
@@ -576,10 +587,68 @@ int fight::WildPokemon()
 			break;
 
 		case 3:   //objets
-			if (getTrainer(0).getPokeballs(0) > 0) {
-				for (int i = 0; i < getTrainer(0).getPokeballs(0); i++)
-				{
+			if (getTrainer(0).getPokeballs() > 0) {
+				if (true) {
 
+					if (Timer <= 10) {
+						Timer++;
+						DrawTextureEx(getPokemon(0).getPokeballSprite(), Vector2{ 500, 230 }, 0, 3, Color(WHITE));
+					}
+					else if (Timer <= 20) {
+						Timer++;
+						DrawTextureEx(getPokemon(0).getPokeballSprite(), Vector2{ 520, 230 }, 0, 3, Color(WHITE));
+					}
+
+					else if (Timer <= 80) {
+						Timer++;
+						DrawTextureEx(getPokemon(0).getPokeballSprite(), Vector2{ 510, 230 }, 0, 3, Color(WHITE));
+					}
+					else {
+
+						if (catchAttemp >= 6) {
+							if (getTrainer(0).getTeam().size() <= 2) {
+								getTrainer(0).AddPokemon(wildPokemonRef);
+								std::cout << "catch";
+								getTrainer(0).SetPokeballs(-1);
+								Timer = 0;
+								index = 1;
+								catchAttemp = 0;
+								wildPokemonValid = false;
+								winFight = 1;
+							}
+							else {
+								std::cout << "catch && team full";
+								int removePokemon = ChoosePokemon();
+								if (removePokemon >= 0) {
+									getTrainer(0).RemovePokemon(removePokemon);
+									getTrainer(0).AddPokemon(wildPokemonRef);
+									Timer = 0;
+									index = 1;
+									catchAttemp = 0;
+									wildPokemonValid = false;
+									winFight = 1;
+								}
+							}
+
+						}
+						else {
+							int catchPokemon = GetRandomValue(0, 100);
+
+							if (catchPokemon < ((wildPokemonRef.GetLife() / wildPokemonRef.GetMaxLife()) * 100) + wildPokemonRef.GetLevel()) {
+								Timer = 0;
+								index = 1;
+								catchAttemp = 0;
+								playerTurn = false;
+							}
+							else {
+								catchAttemp++;
+								Timer = 0;
+							}
+
+						}
+
+						
+					}
 				}
 			}
 			else {
@@ -822,15 +891,15 @@ int fight::ChoosePokemon()
 		if (getTrainer(0).getTeam()[i].GetLife() > 0.0) {
 			pokemonAlive++;
 
-			DrawTextureEx(getTrainer(0).getTeam()[i].GetSprite(), Vector2{ 201, static_cast <float>(238 + i * 50) }, 0, 2, Color(WHITE));
-			DrawTextEx(ft, getTrainer(0).getTeam()[i].GetName().c_str(), Vector2{ 301, static_cast <float>(268 + i * 80) }, 20, 1, Color(BLACK));
-
-			std::string pokemonLife = to_string((int)getTrainer(0).getTeam()[i].GetMaxLife()).c_str();
-			std::string pokemonMaxLife = to_string((int)getTrainer(0).getTeam()[i].GetLife()).c_str();
+			DrawTextureEx(getTrainer(0).getTeam()[i].GetSprite(), Vector2{ 201, static_cast <float>(180 + i * 80) }, 0, 2, Color(WHITE));
+			DrawTextEx(ft, getTrainer(0).getTeam()[i].GetName().c_str(), Vector2{ 351, static_cast <float>(190 + i * 80) }, 20, 1, Color(BLACK));
+			
+			std::string pokemonLife = to_string((int)getTrainer(0).getTeam()[i].GetLife()).c_str();
+			std::string pokemonMaxLife = to_string((int)getTrainer(0).getTeam()[i].GetMaxLife()).c_str();
 			std::string textLife = pokemonLife + "/" + pokemonMaxLife;
-			DrawTextEx(ft, textLife.c_str(), Vector2{ 301, static_cast <float>(288 + i * 80) }, 20, 1, Color(BLACK));
-			if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { 301, static_cast<float>(268 + i * 80), static_cast<float>(MeasureText(getTrainer(0).getTeam()[i].GetName().c_str(), 20)), 30 })) {
-				DrawRectangleLines(291, 268 + i * 80, MeasureText(getTrainer(0).getTeam()[i].GetName().c_str(), 20) + 5, 30, BLACK);
+			DrawTextEx(ft, textLife.c_str(), Vector2{ 351, static_cast <float>(210 + i * 80) }, 20, 1, Color(BLACK));
+			if (CheckCollisionPointRec(static_cast<Vector2>(GetMousePosition()), { 351, static_cast<float>(190 + i * 80), static_cast<float>(MeasureText(getTrainer(0).getTeam()[i].GetName().c_str(), 20)), 30 })) {
+				DrawRectangleLines(351, 190 + i * 80, MeasureText(getTrainer(0).getTeam()[i].GetName().c_str(), 20) + 5, 30, BLACK);
 				if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 					choice = i;
 				}

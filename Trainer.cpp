@@ -35,49 +35,24 @@ int Trainer::getMoney()
 	return money;
 }
 
-int Trainer::getPokeballs(int _typePokeball)
+int Trainer::getPokeballs()
 {
-	switch (_typePokeball)
-	{
-	case 0:
-		return pokeball;
-		break;
-
-	case 1:
-		return superBall;
-		break;
-
-	case 2:
-		return HyperBall;
-		break;
-
-	case 3:
-		return MasterBall;
-		break;
-	}
+	return pokeball;
 }
 
-void Trainer::addPokeballs(int _typePokeball, int _pokeballs)
+void Trainer::RemovePokemon(int index)
 {
-	switch (_typePokeball)
-	{
-	case 0:
-		pokeball += _pokeballs;
-		break;
+	pokemons.erase(pokemons.begin() + index);
+}
 
-	case 1:
-		superBall += _pokeballs;
-		break;
-		
-	case 2:
-		HyperBall += _pokeballs;
-		break;
+void Trainer::SetPokeballs(int value)
+{
+	pokeball += value;
+}
 
-	case 3:
-		MasterBall += _pokeballs;
-		break;
-	}
-	
+void Trainer::addPokeball(int _pokeballs)
+{
+	pokeball += _pokeballs;
 }
 
 void Trainer::addMoney(int _money)

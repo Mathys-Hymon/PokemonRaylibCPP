@@ -30,7 +30,7 @@ public:
     void SetSprite(Texture& NewSprite);
     Texture2D& GetSprite();
     Texture2D& getPokeballSprite();
-    void SetPokeballSprite(Texture2D NewSprite);
+    void SetPokeballSprite(Texture2D& NewSprite);
     void SetName(string newName);
 
     string& GetName();

@@ -256,6 +256,10 @@ std::vector<Trainer> trainers = {
    {"dresseur pyro", "taylor", "le feu qui brûle en moi !", 300, 4, {}},
 };
 
+
+Texture2D pokeballSprite;
+
+
 void LoadTrainers()
 {
 	trainers[2].AddPokemon(allPokemons[15]);
@@ -319,11 +323,16 @@ Trainer& getTrainer(int index)
 
 void LoadPokeSprites()
 {
+	Image pokeballImage = LoadImage("resources/ButtonsIcons/pokeball_1.png");
+	pokeballSprite = LoadTextureFromImage(pokeballImage);
+	UnloadImage(pokeballImage);
+
 	for (int i = 0; i < allPokemons.size(); i++) {
 		std::string imagePath = "resources/pokemonsImages/pokemon_" + std::to_string(i + 1) + ".png";
 		Image pokemonImage = LoadImage(imagePath.c_str());
 		Texture pokemonSprite = LoadTextureFromImage(pokemonImage);
 		allPokemons[i].SetSprite(pokemonSprite);
+		allPokemons[i].SetPokeballSprite(pokeballSprite);
 		UnloadImage(pokemonImage);
 	}
 }
@@ -333,4 +342,5 @@ void UnloadPokeSprites()
 	for (int i = 0; i < allPokemons.size(); i++) {
 		UnloadTexture(allPokemons[i].GetSprite());
 	}
+	UnloadTexture(pokeballSprite);
 }
