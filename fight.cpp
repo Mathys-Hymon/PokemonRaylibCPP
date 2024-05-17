@@ -487,7 +487,10 @@ int fight::WildPokemon()
 
 	else if (playerTurn) {
 		int choice = -1;
-		DrawFight(wildPokemonRef);
+
+		if (index != 3) {
+			DrawFight(wildPokemonRef);
+		}
 
 		switch (index)
 		{
@@ -587,9 +590,8 @@ int fight::WildPokemon()
 			break;
 
 		case 3:   //objets
-			if (getTrainer(0).getPokeballs() > 0) {
-				if (true) {
 
+			if (getTrainer(0).getPokeballs() > 0) {
 					if (Timer <= 10) {
 						Timer++;
 						DrawTextureEx(getPokemon(0).getPokeballSprite(), Vector2{ 500, 230 }, 0, 3, Color(WHITE));
@@ -605,10 +607,9 @@ int fight::WildPokemon()
 					}
 					else {
 
-						if (catchAttemp >= 6) {
-							if (getTrainer(0).getTeam().size() <= 2) {
+						if (catchAttemp >= 3) {
+							if (getTrainer(0).getTeam().size() < 6) {
 								getTrainer(0).AddPokemon(wildPokemonRef);
-								std::cout << "catch";
 								getTrainer(0).SetPokeballs(-1);
 								Timer = 0;
 								index = 1;
@@ -617,8 +618,11 @@ int fight::WildPokemon()
 								winFight = 1;
 							}
 							else {
-								std::cout << "catch && team full";
+
+								DrawTextEx(ft, "Vous avez trop de Pokemons dans votre equipe, choisissez en un a enlever", Vector2{ 201, 523 }, 20, 1, Color(BLACK));
+								playerTurn = true;
 								int removePokemon = ChoosePokemon();
+
 								if (removePokemon >= 0) {
 									getTrainer(0).RemovePokemon(removePokemon);
 									getTrainer(0).AddPokemon(wildPokemonRef);
@@ -646,9 +650,6 @@ int fight::WildPokemon()
 							}
 
 						}
-
-						
-					}
 				}
 			}
 			else {
@@ -665,6 +666,7 @@ int fight::WildPokemon()
 			}
 
 
+			break;
 		case 4:  // Fuite
 
 				DrawTextEx(ft, "Tu fuis le combat", Vector2{ 201, 523 }, 20, 1, Color(BLACK));
@@ -888,7 +890,7 @@ int fight::ChoosePokemon()
 	int pokemonAlive = 0;
 	int choice = -1;
 	for (int i = 0; i < getTrainer(0).getTeam().size(); i++) {
-		if (getTrainer(0).getTeam()[i].GetLife() > 0.0) {
+		if (getTrainer(0).getTeam()[i].GetLife() > 0) {
 			pokemonAlive++;
 
 			DrawTextureEx(getTrainer(0).getTeam()[i].GetSprite(), Vector2{ 201, static_cast <float>(180 + i * 80) }, 0, 2, Color(WHITE));
@@ -997,15 +999,6 @@ float fight::DamageCalculator(int damage, PokeType TypeAttaquant, PokeType TypeD
 		{1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 0.5, 1, 0.5},   // Dark
 		{1, 0.5, 0.5, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 0.5}  // Steel
 	};
-
-	if (matrice[TypeAttaquant][TypeDefenseur] < 1) 
-	{
-
-	}
-	else if (matrice[TypeAttaquant][TypeDefenseur] > 1) 
-	{
-
-	}
 	
 	return damage * matrice[TypeAttaquant][TypeDefenseur];
 }
